@@ -24,7 +24,7 @@ import java.util.function.Supplier;
  *
  * <p>Use this where the result of a particular operation
  * is unlikely to change upon calling it with the same
- * parameters, especially regarding its exceptionality.</p>
+ * arguments, especially regarding its exceptionality.</p>
  *
  * @param <V>   value type
  */

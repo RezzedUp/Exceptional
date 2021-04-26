@@ -14,6 +14,7 @@ import java.util.function.Consumer;
  *
  * @param <E>   exception type
  */
+@SuppressWarnings("unused")
 @FunctionalInterface
 public interface Catcher<E extends Throwable> extends Consumer<E>
 {

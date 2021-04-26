@@ -6,8 +6,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 /**
- * Exceptional by RezzedUp.
- * https://github.com/RezzedUp/Exceptional
+ * Exceptional by RezzedUp
+ * <p><a href="https://github.com/RezzedUp/Exceptional">https://github.com/RezzedUp/Exceptional</a></p>
  */
 module com.rezzedup.util.exceptional
 {

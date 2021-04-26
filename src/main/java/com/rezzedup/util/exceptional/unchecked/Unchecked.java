@@ -12,6 +12,7 @@ package com.rezzedup.util.exceptional.unchecked;
  *
  * @param <E>   checked exception type
  */
+@SuppressWarnings("unused")
 public interface Unchecked<E extends Throwable>
 {
     /**

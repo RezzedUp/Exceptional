@@ -30,7 +30,8 @@ public class Attempt
      * @param <T>       type of supplied value
      *
      * @return  the supplied value wrapped in an optional
-     *          unless the catcher itself throws an exception
+     *          otherwise empty, unless the catcher itself
+     *          throws an exception
      *
      * @throws NullPointerException     if any arguments are {@code null}
      */
