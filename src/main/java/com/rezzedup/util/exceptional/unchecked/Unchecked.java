@@ -7,10 +7,28 @@
  */
 package com.rezzedup.util.exceptional.unchecked;
 
+/**
+ * Represents an unchecked exception.
+ *
+ * @param <E>   checked exception type
+ */
 public interface Unchecked<E extends Throwable>
 {
+    /**
+     * Gets the non-{@code null} formerly "checked"
+     * exception as a raw {@code Throwable}.
+     *
+     * @return  the raw checked exception
+     */
     Throwable getCause();
     
+    /**
+     * Gets the non-{@code null} formerly "checked"
+     * exception as its proper type.
+     *
+     * @return  the checked exception
+     *          cast to its proper type
+     */
     @SuppressWarnings("unchecked")
     default E checked()
     {

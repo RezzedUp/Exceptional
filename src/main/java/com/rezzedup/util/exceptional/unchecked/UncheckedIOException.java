@@ -11,10 +11,10 @@ import com.rezzedup.util.exceptional.Rethrow;
 
 import java.io.IOException;
 
+/**
+ * Unchecked version of {@link IOException}.
+ */
 public class UncheckedIOException extends Rethrow implements Unchecked<IOException>
 {
-    public UncheckedIOException(IOException cause)
-    {
-        super(cause);
-    }
+    public UncheckedIOException(IOException cause) { super(cause); }
 }
