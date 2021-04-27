@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="maven_goal-update-license-headers.run" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="build-production" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -9,14 +9,13 @@
             <set />
           </option>
           <option name="goals">
-            <list>
-              <option value="license:remove" />
-              <option value="license:format" />
-            </list>
+            <list />
           </option>
           <option name="pomFileName" />
           <option name="profilesMap">
-            <map />
+            <map>
+              <entry key="production" value="true" />
+            </map>
           </option>
           <option name="resolveToWorkspace" value="true" />
           <option name="workingDirPath" value="$PROJECT_DIR$" />

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="maven_profile-production.run" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="build-then-deploy" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -9,13 +9,13 @@
             <set />
           </option>
           <option name="goals">
-            <list />
+            <list>
+              <option value="-Ddeploy" />
+            </list>
           </option>
           <option name="pomFileName" />
           <option name="profilesMap">
-            <map>
-              <entry key="production" value="true" />
-            </map>
+            <map />
           </option>
           <option name="resolveToWorkspace" value="true" />
           <option name="workingDirPath" value="$PROJECT_DIR$" />
