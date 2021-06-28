@@ -9,26 +9,28 @@ package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Rethrow;
 
-import java.util.function.Supplier;
+import java.util.function.BiFunction;
 
 /**
  *
- * @param <T>   return type
+ * @param <T>   first argument type
+ * @param <U>   second argument type
+ * @param <R>   return type
  * @param <E>   exception type
  *
- * @see Supplier
+ * @see BiFunction
  */
 @FunctionalInterface
-public interface CheckedSupplier<T, E extends Throwable>
+public interface CheckedBiFunction<T, U, R, E extends Throwable>
 {
-    static <T> Supplier<T> unchecked(CheckedSupplier<T, ? extends Exception> supplier)
+    static <T, U, R> BiFunction<T, U, R> unchecked(CheckedBiFunction<T, U, R, ? extends Exception> function)
     {
-        return () ->
+        return (t, u) ->
         {
-            try { return supplier.get(); }
+            try { return function.accept(t, u); }
             catch (Exception e) { throw Rethrow.caught(e); }
         };
     }
     
-    T get() throws E;
+    R accept(T t, U u) throws E;
 }

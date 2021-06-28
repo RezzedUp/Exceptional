@@ -32,10 +32,9 @@ public class Attempt
      * @return  the supplied value wrapped in an optional
      *          otherwise empty, unless the catcher itself
      *          throws an exception
-     *
-     * @throws NullPointerException     if any arguments are {@code null}
      */
-    public static <T> Optional<T> with(Catcher<RuntimeException> catcher, Supplier<@NullOr T> supplier)
+    @SuppressWarnings("NullableProblems")
+    public static <T> Optional<T> with(Catcher<? super RuntimeException> catcher, Supplier<@NullOr T> supplier)
     {
         Objects.requireNonNull(catcher, "catcher");
         Objects.requireNonNull(supplier, "supplier");
@@ -52,10 +51,9 @@ public class Attempt
      *
      * @param catcher   runtime exception handler
      * @param action    action runnable
-     *
-     * @throws NullPointerException     if any arguments are {@code null}
      */
-    public static void with(Catcher<RuntimeException> catcher, Runnable action)
+    @SuppressWarnings("NullableProblems")
+    public static void with(Catcher<? super RuntimeException> catcher, Runnable action)
     {
         Objects.requireNonNull(catcher, "catcher");
         Objects.requireNonNull(action, "action");
@@ -74,8 +72,6 @@ public class Attempt
      * @return  the supplied value wrapped in an optional
      *          or empty if a runtime exception occurs
      *
-     * @throws NullPointerException     if any arguments are {@code null}
-     *
      * @see Catcher#ignore(Throwable)
      */
     public static <T> Optional<T> ignoring(Supplier<@NullOr T> supplier)
@@ -88,8 +84,6 @@ public class Attempt
      * exceptions that occur.
      *
      * @param action    action runnable
-     *
-     * @throws NullPointerException     if any arguments are {@code null}
      *
      * @see Catcher#ignore(Throwable)
      */
@@ -108,8 +102,6 @@ public class Attempt
      * @return  the supplied value wrapped in an optional
      *          or empty if a runtime exception occurs
      *
-     * @throws NullPointerException     if any arguments are {@code null}
-     *
      * @see Catcher#print(Throwable)
      */
     public static <T> Optional<T> printing(Supplier<@NullOr T> supplier)
@@ -122,8 +114,6 @@ public class Attempt
      * exceptions that occur.
      *
      * @param action    action runnable
-     *
-     * @throws NullPointerException     if any arguments are {@code null}
      *
      * @see Catcher#print(Throwable)
      */
