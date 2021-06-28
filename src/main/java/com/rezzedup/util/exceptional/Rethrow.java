@@ -11,11 +11,26 @@ import java.util.Objects;
 
 /**
  * Represents an existing exception thrown again.
- * It also guarantees that causal exceptions
+ * It also guarantees that the causal exception
  * cannot be {@code null}.
  */
 public class Rethrow extends RuntimeException
 {
+    /**
+     * Wraps the provided throwable then rethrows it.
+     * If the {@code cause} is itself an instance of
+     * {@code Rethrow}, it will simply be rethrown again.
+     *
+     * @param cause     the caught exception to rethrow
+     *
+     * @return  nothing, this method always throws
+     * @throws Rethrow  the rethrown exception
+     */
+    public static Rethrow caught(Throwable cause)
+    {
+        throw (cause instanceof Rethrow) ? (Rethrow) cause : new Rethrow(cause);
+    }
+    
     /**
      * Constructs.
      *

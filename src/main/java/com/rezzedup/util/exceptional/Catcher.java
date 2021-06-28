@@ -46,6 +46,6 @@ public interface Catcher<E extends Throwable> extends Consumer<E>
      */
     static <E extends Throwable> void rethrow(E exception)
     {
-        throw new Rethrow(exception);
+        throw Rethrow.caught(exception);
     }
 }
