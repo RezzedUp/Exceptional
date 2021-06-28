@@ -9,6 +9,7 @@ package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Rethrow;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -24,6 +25,8 @@ public interface CheckedFunction<T, R, E extends Throwable>
 {
     static <T, R> Function<T, R> unchecked(CheckedFunction<T, R, ? extends Exception> function)
     {
+        Objects.requireNonNull(function, "function");
+        
         return t ->
         {
             try { return function.apply(t); }

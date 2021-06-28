@@ -7,14 +7,15 @@
  */
 package com.rezzedup.util.exceptional;
 
+import com.rezzedup.util.exceptional.checked.CheckedRunnable;
+import com.rezzedup.util.exceptional.checked.CheckedSupplier;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
- * Utilities for handling runtime exceptions.
+ * Utilities for handling exceptions.
  */
 @SuppressWarnings("unused")
 public class Attempt
@@ -22,10 +23,10 @@ public class Attempt
     private Attempt() { throw new UnsupportedOperationException(); }
     
     /**
-     * Attempts to return the supplied value by handling all
-     * runtime exceptions with the provided catcher.
+     * Attempts to return the supplied value by handling
+     * any exceptions with the provided catcher.
      *
-     * @param catcher   runtime exception handler
+     * @param catcher   exception handler
      * @param supplier  value supplier
      * @param <T>       type of supplied value
      *
@@ -33,91 +34,91 @@ public class Attempt
      *          otherwise empty, unless the catcher itself
      *          throws an exception
      */
-    @SuppressWarnings("NullableProblems")
-    public static <T> Optional<T> with(Catcher<? super RuntimeException> catcher, Supplier<@NullOr T> supplier)
+    @SuppressWarnings({"NullableProblems", "ConstantConditions"})
+    public static <T> Optional<T> with(Catcher<? super Exception> catcher, CheckedSupplier<@NullOr T, ? extends Exception> supplier)
     {
         Objects.requireNonNull(catcher, "catcher");
         Objects.requireNonNull(supplier, "supplier");
         
         try { return Optional.ofNullable(supplier.get()); }
-        catch (RuntimeException e) { catcher.accept(e); }
+        catch (Exception e) { catcher.accept(e); }
         
         return Optional.empty();
     }
     
     /**
-     * Attempts to run the action by passing any runtime
+     * Attempts to run the action by passing any
      * exceptions to the provided catcher.
      *
-     * @param catcher   runtime exception handler
+     * @param catcher   exception handler
      * @param action    action runnable
      */
     @SuppressWarnings("NullableProblems")
-    public static void with(Catcher<? super RuntimeException> catcher, Runnable action)
+    public static void with(Catcher<? super Exception> catcher, CheckedRunnable<? extends Exception> action)
     {
         Objects.requireNonNull(catcher, "catcher");
         Objects.requireNonNull(action, "action");
         
         try { action.run(); }
-        catch (RuntimeException e) { catcher.accept(e); }
+        catch (Exception e) { catcher.accept(e); }
     }
     
     /**
-     * Attempts to return the supplied value by ignoring any
-     * runtime exceptions that occur.
+     * Attempts to return the supplied value by ignoring
+     * any exceptions that occur.
      *
      * @param supplier  value supplier
      * @param <T>       type of supplied value
      *
      * @return  the supplied value wrapped in an optional
-     *          or empty if a runtime exception occurs
+     *          or empty if an exception occurs
      *
      * @see Catcher#ignore(Throwable)
      */
-    public static <T> Optional<T> ignoring(Supplier<@NullOr T> supplier)
+    public static <T> Optional<T> ignoring(CheckedSupplier<@NullOr T, ? extends Exception> supplier)
     {
         return with(Catcher::ignore, supplier);
     }
     
     /**
-     * Attempts to run the action by ignoring any runtime
+     * Attempts to run the action by ignoring any
      * exceptions that occur.
      *
      * @param action    action runnable
      *
      * @see Catcher#ignore(Throwable)
      */
-    public static void ignoring(Runnable action)
+    public static void ignoring(CheckedRunnable<? extends Exception> action)
     {
         with(Catcher::ignore, action);
     }
     
     /**
-     * Attempts to return the supplied value by printing any
-     * runtime exceptions that occur.
+     * Attempts to return the supplied value by printing
+     * any exceptions that occur.
      *
      * @param supplier  value supplier
      * @param <T>       type of supplied value
      *
      * @return  the supplied value wrapped in an optional
-     *          or empty if a runtime exception occurs
+     *          or empty if an exception occurs
      *
      * @see Catcher#print(Throwable)
      */
-    public static <T> Optional<T> printing(Supplier<@NullOr T> supplier)
+    public static <T> Optional<T> printing(CheckedSupplier<@NullOr T, ? extends Exception> supplier)
     {
         return with(Catcher::print, supplier);
     }
     
     /**
-     * Attempts to run the action by printing any runtime
+     * Attempts to run the action by printing any
      * exceptions that occur.
      *
      * @param action    action runnable
      *
      * @see Catcher#print(Throwable)
      */
-    public static void printing(Runnable action)
+    public static void printing(CheckedRunnable<? extends Exception> action)
     {
         with(Catcher::print, action);
     }

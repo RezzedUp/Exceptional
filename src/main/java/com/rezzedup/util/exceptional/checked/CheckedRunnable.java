@@ -9,6 +9,8 @@ package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Rethrow;
 
+import java.util.Objects;
+
 /**
  * @param <E>   exception type
  *
@@ -19,6 +21,8 @@ public interface CheckedRunnable<E extends Throwable>
 {
     static Runnable unchecked(CheckedRunnable<? extends Exception> runnable)
     {
+        Objects.requireNonNull(runnable, "runnable");
+        
         return () ->
         {
             try { runnable.run(); }

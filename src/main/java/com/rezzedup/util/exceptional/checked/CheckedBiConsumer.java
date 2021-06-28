@@ -9,6 +9,7 @@ package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Rethrow;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /**
@@ -24,6 +25,8 @@ public interface CheckedBiConsumer<T, U, E extends Throwable>
 {
     static <T, U> BiConsumer<T, U> unchecked(CheckedBiConsumer<T, U, ? extends Exception> consumer)
     {
+        Objects.requireNonNull(consumer, "consumer");
+        
         return (t, u) ->
         {
             try { consumer.accept(t, u); }

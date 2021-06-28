@@ -9,6 +9,7 @@ package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Rethrow;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -23,6 +24,8 @@ public interface CheckedSupplier<T, E extends Throwable>
 {
     static <T> Supplier<T> unchecked(CheckedSupplier<T, ? extends Exception> supplier)
     {
+        Objects.requireNonNull(supplier, "supplier");
+        
         return () ->
         {
             try { return supplier.get(); }

@@ -9,6 +9,7 @@ package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Rethrow;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -23,6 +24,8 @@ public interface CheckedConsumer<T, E extends Throwable>
 {
     static <T> Consumer<T> unchecked(CheckedConsumer<T, ? extends Exception> consumer)
     {
+        Objects.requireNonNull(consumer, "consumer");
+        
         return t ->
         {
             try { consumer.accept(t); }
