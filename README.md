@@ -4,3 +4,7 @@
 [![](https://img.shields.io/badge/Java-11-orange)](# "This project targets Java 11")
 
 Utilities for handling exceptions.
+
+## Maven
+
+*`Coming soon!`*
