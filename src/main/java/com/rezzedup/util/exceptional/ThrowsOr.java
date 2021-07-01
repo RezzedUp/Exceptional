@@ -7,6 +7,7 @@
  */
 package com.rezzedup.util.exceptional;
 
+import com.rezzedup.util.exceptional.checked.CheckedSupplier;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.NoSuchElementException;
@@ -132,54 +133,30 @@ public class ThrowsOr<V>
     
     /**
      * Creates a new {@code ThrowsOr} containing the
-     * supplied value or the runtime exception thrown
+     * supplied value or the exception thrown
      * when attempting to get it.
      *
      * <p>If the value is successfully supplied without
-     * interference from any runtime exceptions, the
-     * result is created by passing the value to
+     * interference from any exceptions, the result
+     * is created by passing the value to
      * {@link #maybe(Object)}.</p>
      *
-     * <p>Likewise, any thrown runtime exceptions are
+     * <p>Likewise, any thrown exceptions are
      * passed to {@link #raise(Throwable)}.</p>
      *
      * @param supplier  possibly exceptional value supplier
      * @param <V>       value type
      *
      * @return  a new instance containing the supplied
-     *          value or a runtime exception
+     *          value or an exception
      *
      * @throws NullPointerException     if supplier is {@code null}
      */
-    public static <V> ThrowsOr<V> result(Supplier<@NullOr V> supplier)
+    public static <V> ThrowsOr<V> result(CheckedSupplier<@NullOr V, ? extends Exception> supplier)
     {
         Objects.requireNonNull(supplier, "supplier");
         try { return maybe(supplier.get()); }
-        catch (RuntimeException e) { return raise(e); }
-    }
-    
-    /**
-     * Converts from an {@code Optional} to a new
-     * {@code ThrowsOr} instance containing either
-     * the optional's value or the supplied exception
-     * if it's empty.
-     *
-     * @param optional              an optional
-     * @param exceptionSupplier     exception supplier
-     * @param <V>                   value type
-     *
-     * @return  a new instance containing the supplied
-     *          optional's value or the supplied exception
-     *
-     * @throws NullPointerException     if any arguments are {@code null} or
-     *                                  a {@code null} exception is supplied
-     */
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public static <V> ThrowsOr<V> present(Optional<V> optional, Supplier<Throwable> exceptionSupplier)
-    {
-        Objects.requireNonNull(optional, "optional");
-        Objects.requireNonNull(exceptionSupplier, "exceptionSupplier");
-        return optional.map(ThrowsOr::value).orElseGet(() -> raise(exceptionSupplier));
+        catch (Exception e) { return raise(e); }
     }
     
     private final @NullOr V value;

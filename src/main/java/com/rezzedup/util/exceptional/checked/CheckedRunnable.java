@@ -12,6 +12,8 @@ import com.rezzedup.util.exceptional.Rethrow;
 import java.util.Objects;
 
 /**
+ * {@code Runnable} that can throw checked exceptions.
+ *
  * @param <E>   exception type
  *
  * @see Runnable
@@ -19,6 +21,15 @@ import java.util.Objects;
 @FunctionalInterface
 public interface CheckedRunnable<E extends Throwable>
 {
+    /**
+     * Converts a {@code CheckedRunnable} into a regular {@code Runnable}.
+     * Any caught exceptions will be rethrown with:
+     * {@link Rethrow#caught(Throwable)}
+     *
+     * @param runnable  the checked runnable
+     *
+     * @return  the CheckedRunnable wrapped by an unchecked Runnable
+     */
     static Runnable unchecked(CheckedRunnable<? extends Exception> runnable)
     {
         Objects.requireNonNull(runnable, "runnable");
@@ -30,5 +41,10 @@ public interface CheckedRunnable<E extends Throwable>
         };
     }
     
+    /**
+     * Runs.
+     *
+     * @throws E    a checked exception
+     */
     void run() throws E;
 }

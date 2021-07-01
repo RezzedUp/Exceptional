@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
+ * {@code BiFunction} that can throw checked exceptions.
  *
  * @param <T>   first argument type
  * @param <U>   second argument type
@@ -24,6 +25,18 @@ import java.util.function.BiFunction;
 @FunctionalInterface
 public interface CheckedBiFunction<T, U, R, E extends Throwable>
 {
+    /**
+     * Converts a {@code CheckedBiFunction} into a regular {@code BiFunction}.
+     * Any caught exceptions will be rethrown with:
+     * {@link Rethrow#caught(Throwable)}
+     *
+     * @param function  the checked bifunction
+     * @param <T>       first argument type
+     * @param <U>       second argument type
+     * @param <R>       return type
+     *
+     * @return  the CheckedBiFunction wrapped by an unchecked BiFunction
+     */
     static <T, U, R> BiFunction<T, U, R> unchecked(CheckedBiFunction<T, U, R, ? extends Exception> function)
     {
         Objects.requireNonNull(function, "function");
@@ -35,5 +48,13 @@ public interface CheckedBiFunction<T, U, R, E extends Throwable>
         };
     }
     
+    /**
+     * Applies this function to the given arguments.
+     *
+     * @param t     the first argument
+     * @param u     the second argument
+     * @return      the function result
+     * @throws E    a checked exception
+     */
     R accept(T t, U u) throws E;
 }
