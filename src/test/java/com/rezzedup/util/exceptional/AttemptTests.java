@@ -22,7 +22,7 @@ public class AttemptTests
     
     private void throwsChecked() throws Exception { throw new Exception(); }
     
-    private void expect(String message) { for (int i = 0; i < 3; i++) { System.err.println(message); } }
+    private void expect(String message){ for (int i = 0; i < 3; i++) { System.err.println("\n" + message + "\n"); } }
     
     @Test
     public void testIgnoring()
@@ -40,6 +40,8 @@ public class AttemptTests
         
         Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.printing(this::divideByZero));
         assertTrue(divided.isEmpty());
+        
+        expect("THESE STACKTRACES ARE EXPECTED.");
         
         assertDoesNotThrow(() -> Attempt.printing(this::throwsChecked));
         
