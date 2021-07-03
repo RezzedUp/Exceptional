@@ -8,7 +8,8 @@
 Utilities for handling exceptions.
 
 ```java
-List<String> lines = Attempt.ignoring(() -> Files.readAllLines(Path.of("example.txt"))).orElseGet(List::of);
+List<String> lines =
+    Attempt.ignoring(() -> Files.readAllLines(Path.of("example.txt"))).orElseGet(List::of);
 ```
 
 ## Maven
@@ -43,13 +44,17 @@ Maven Central: https://search.maven.org/artifact/com.rezzedup.util/exceptional
 > ```
 </details>
 
+<details>
+<summary><b>Note:</b> <i>Shading</i></summary>
+
+> [ℹ️](#note-shading)
+> If you intend to shade this library, please consider **relocating** the packages
+> to avoid potential conflicts with other projects. This library also utilizes
+> nullness annotations, which may be undesirable in a shaded uber-jar. They can
+> safely be excluded, and you are encouraged to do so.
+</details>
+
 ### Documentation
 
 Javadoc: https://javadoc.io/doc/com.rezzedup.util/exceptional
 
-### Shading
-
-If you intend to shade this library, please consider **relocating** the packages
-to avoid potential conflicts with other projects. This library also utilizes
-nullness annotations, which may be undesirable in a shaded uber-jar. They can
-safely be excluded, and you are encouraged to do so.
