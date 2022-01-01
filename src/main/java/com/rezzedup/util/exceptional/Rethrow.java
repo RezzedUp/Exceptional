@@ -16,43 +16,43 @@ import java.util.Objects;
  */
 public class Rethrow extends RuntimeException
 {
-    /**
-     * Wraps the provided throwable then rethrows it.
-     * If the {@code cause} is itself an instance of
-     * {@code Rethrow}, it will simply be rethrown again.
-     *
-     * @param cause     the caught exception to rethrow
-     *
-     * @return  nothing, this method always throws
-     * @throws Rethrow  the rethrown exception
-     */
-    public static Rethrow caught(Throwable cause)
-    {
-        throw (cause instanceof Rethrow) ? (Rethrow) cause : new Rethrow(cause);
-    }
-    
-    /**
-     * Constructs.
-     *
-     * @param cause     an existing exception
-     *
-     * @throws NullPointerException if cause is {@code null}
-     */
-    public Rethrow(Throwable cause)
-    {
-        super(Objects.requireNonNull(cause, "cause"));
-    }
-    
-    /**
-     * Gets the non-{@code null} exception represented
-     * by this rethrow.
-     *
-     * @return  the existing exception that
-     *          this rethrow originates from
-     */
-    @Override // overridden to assert non-null return value
-    public synchronized Throwable getCause()
-    {
-        return super.getCause();
-    }
+	/**
+	 * Wraps the provided throwable then rethrows it.
+	 * If the {@code cause} is itself an instance of
+	 * {@code Rethrow}, it will simply be rethrown again.
+	 *
+	 * @param cause     the caught exception to rethrow
+	 *
+	 * @return  nothing, this method always throws
+	 * @throws Rethrow  the rethrown exception
+	 */
+	public static Rethrow caught(Throwable cause)
+	{
+		throw (cause instanceof Rethrow) ? (Rethrow) cause : new Rethrow(cause);
+	}
+	
+	/**
+	 * Constructs.
+	 *
+	 * @param cause     an existing exception
+	 *
+	 * @throws NullPointerException if cause is {@code null}
+	 */
+	public Rethrow(Throwable cause)
+	{
+		super(Objects.requireNonNull(cause, "cause"));
+	}
+	
+	/**
+	 * Gets the non-{@code null} exception represented
+	 * by this rethrow.
+	 *
+	 * @return  the existing exception that
+	 *          this rethrow originates from
+	 */
+	@Override // overridden to assert non-null return value
+	public synchronized Throwable getCause()
+	{
+		return super.getCause();
+	}
 }

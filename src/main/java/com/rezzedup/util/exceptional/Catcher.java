@@ -18,34 +18,34 @@ import java.util.function.Consumer;
 @FunctionalInterface
 public interface Catcher<E extends Throwable> extends Consumer<E>
 {
-    /**
-     * Does nothing, thus ignoring any consumed exception.
-     *
-     * @param exception     the exception
-     * @param <E>           exception type
-     */
-    static <E extends Throwable> void ignore(E exception) {}
-    
-    /**
-     * Prints exceptions with {@link Throwable#printStackTrace()}.
-     *
-     * @param exception     the exception
-     * @param <E>           exception type
-     */
-    static <E extends Throwable> void print(E exception)
-    {
-        exception.printStackTrace();
-    }
-    
-    /**
-     * Rethrows exceptions with {@link Rethrow}
-     * (a runtime exception).
-     *
-     * @param exception     the exception
-     * @param <E>           exception type
-     */
-    static <E extends Throwable> void rethrow(E exception)
-    {
-        throw Rethrow.caught(exception);
-    }
+	/**
+	 * Does nothing, thus ignoring any consumed exception.
+	 *
+	 * @param exception     the exception
+	 * @param <E>           exception type
+	 */
+	static <E extends Throwable> void ignore(E exception) {}
+	
+	/**
+	 * Prints exceptions with {@link Throwable#printStackTrace()}.
+	 *
+	 * @param exception     the exception
+	 * @param <E>           exception type
+	 */
+	static <E extends Throwable> void print(E exception)
+	{
+		exception.printStackTrace();
+	}
+	
+	/**
+	 * Rethrows exceptions with {@link Rethrow}
+	 * (a runtime exception).
+	 *
+	 * @param exception     the exception
+	 * @param <E>           exception type
+	 */
+	static <E extends Throwable> void rethrow(E exception)
+	{
+		throw Rethrow.caught(exception);
+	}
 }

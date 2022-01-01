@@ -21,30 +21,30 @@ import java.util.Objects;
 @FunctionalInterface
 public interface CheckedRunnable<E extends Throwable>
 {
-    /**
-     * Converts a {@code CheckedRunnable} into a regular {@code Runnable}.
-     * Any caught exceptions will be rethrown with:
-     * {@link Rethrow#caught(Throwable)}
-     *
-     * @param runnable  the checked runnable
-     *
-     * @return  the CheckedRunnable wrapped by an unchecked Runnable
-     */
-    static Runnable unchecked(CheckedRunnable<? extends Exception> runnable)
-    {
-        Objects.requireNonNull(runnable, "runnable");
-        
-        return () ->
-        {
-            try { runnable.run(); }
-            catch (Exception e) { throw Rethrow.caught(e); }
-        };
-    }
-    
-    /**
-     * Runs.
-     *
-     * @throws E    a checked exception
-     */
-    void run() throws E;
+	/**
+	 * Converts a {@code CheckedRunnable} into a regular {@code Runnable}.
+	 * Any caught exceptions will be rethrown with:
+	 * {@link Rethrow#caught(Throwable)}
+	 *
+	 * @param runnable  the checked runnable
+	 *
+	 * @return  the CheckedRunnable wrapped by an unchecked Runnable
+	 */
+	static Runnable unchecked(CheckedRunnable<? extends Exception> runnable)
+	{
+		Objects.requireNonNull(runnable, "runnable");
+		
+		return () ->
+		{
+			try { runnable.run(); }
+			catch (Exception e) { throw Rethrow.caught(e); }
+		};
+	}
+	
+	/**
+	 * Runs.
+	 *
+	 * @throws E    a checked exception
+	 */
+	void run() throws E;
 }
