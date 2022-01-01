@@ -16,6 +16,8 @@ import java.util.Objects;
  */
 public class Rethrow extends RuntimeException
 {
+	private static final Sneaky<?> SNEAKY = new Sneaky<>();
+	
 	/**
 	 * Wraps the provided throwable then rethrows it.
 	 * If the {@code cause} is itself an instance of
@@ -29,6 +31,12 @@ public class Rethrow extends RuntimeException
 	public static Rethrow caught(Throwable cause)
 	{
 		throw (cause instanceof Rethrow) ? (Rethrow) cause : new Rethrow(cause);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E extends Throwable> Sneaky<E> sneaky()
+	{
+		return (Sneaky<E>) SNEAKY;
 	}
 	
 	/**
@@ -54,5 +62,22 @@ public class Rethrow extends RuntimeException
 	public synchronized Throwable getCause()
 	{
 		return super.getCause();
+	}
+	
+	public static class Sneaky<E extends Throwable> implements Catcher<E>
+	{
+		private Sneaky() {}
+		
+		@SuppressWarnings("unchecked")
+		private static <E extends Throwable> void rethrow(Throwable exception) throws E { throw (E) exception; }
+		
+		public RuntimeException smuggle(Throwable throwable)
+		{
+			rethrow(throwable);
+			throw new AssertionError();
+		}
+		
+		@Override
+		public void accept(E exception) { throw smuggle(exception); }
 	}
 }
