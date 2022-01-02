@@ -27,10 +27,10 @@ public class AttemptTests
 	@Test
 	public void testIgnoring()
 	{
-		Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.ignoring(this::divideByZero));
+		Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.ignoring().get(this::divideByZero));
 		assertTrue(divided.isEmpty());
 		
-		assertDoesNotThrow(() -> Attempt.ignoring(this::throwsChecked));
+		assertDoesNotThrow(() -> Attempt.ignoring().run(this::throwsChecked));
 	}
 	
 	@Test
@@ -38,12 +38,12 @@ public class AttemptTests
 	{
 		expect("THE STACKTRACES BELOW ARE EXPECTED.");
 		
-		Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.printing(this::divideByZero));
+		Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.printing().get(this::divideByZero));
 		assertTrue(divided.isEmpty());
 		
 		expect("THESE STACKTRACES ARE EXPECTED.");
 		
-		assertDoesNotThrow(() -> Attempt.printing(this::throwsChecked));
+		assertDoesNotThrow(() -> Attempt.printing().run(this::throwsChecked));
 		
 		expect("NO MORE STACKTRACES ARE EXPECTED.");
 	}
@@ -51,7 +51,7 @@ public class AttemptTests
 	@Test
 	public void testRethrow()
 	{
-		assertThrows(Rethrow.class, () -> Attempt.rethrowing(this::divideByZero));
-		assertThrows(Rethrow.class, () -> Attempt.rethrowing(this::throwsChecked));
+		assertThrows(Rethrow.class, () -> Attempt.rethrowing().get(this::divideByZero));
+		assertThrows(Rethrow.class, () -> Attempt.rethrowing().run(this::throwsChecked));
 	}
 }
