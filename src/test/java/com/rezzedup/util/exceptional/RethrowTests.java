@@ -15,19 +15,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RethrowTests
 {
-	@Test
-	public void testRethrow()
-	{
-		assertThrows(Rethrow.class, () -> {
-			throw Rethrow.caught(new IOException());
-		});
-	}
-	
-	@Test
-	public void testSneaky()
-	{
-		assertThrows(IOException.class, () -> {
-			throw Sneaky.smuggle(new IOException());
-		});
-	}
+    @Test
+    public void testRethrow()
+    {
+        assertThrows(Rethrow.class, () -> {
+            throw Rethrow.caught(new IOException());
+        });
+    }
+    
+    @Test
+    public void testSneaky()
+    {
+        assertThrows(IOException.class, () -> {
+            throw Sneaky.smuggle(new IOException());
+        });
+    }
 }

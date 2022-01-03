@@ -9,16 +9,16 @@ package com.rezzedup.util.exceptional;
 
 public class Sneaky
 {
-	private Sneaky() { throw new UnsupportedOperationException(); }
-	
-	@SuppressWarnings("unchecked")
-	private static <E extends Throwable> void sneak(Throwable exception) throws E { throw (E) exception; }
-	
-	public static RuntimeException smuggle(Throwable throwable)
-	{
-		sneak(throwable);
-		throw new AssertionError();
-	}
-	
-	public static <E extends Throwable> void rethrow(E exception) { throw smuggle(exception); }
+    private Sneaky() { throw new UnsupportedOperationException(); }
+    
+    @SuppressWarnings("unchecked")
+    private static <E extends Throwable> void sneak(Throwable exception) throws E { throw (E) exception; }
+    
+    public static RuntimeException smuggle(Throwable throwable)
+    {
+        sneak(throwable);
+        throw new AssertionError();
+    }
+    
+    public static <E extends Throwable> void rethrow(E exception) { throw smuggle(exception); }
 }

@@ -16,42 +16,42 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AttemptTests
 {
-	private static final IntSupplier ZERO = () -> 0;
-	
-	private int divideByZero() { return 1 / ZERO.getAsInt(); }
-	
-	private void throwsChecked() throws Exception { throw new Exception(); }
-	
-	private void expect(String message){ for (int i = 0; i < 3; i++) { System.err.println("\n" + message + "\n"); } }
-	
-	@Test
-	public void testIgnoring()
-	{
-		Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.ignoring().get(this::divideByZero));
-		assertTrue(divided.isEmpty());
-		
-		assertDoesNotThrow(() -> Attempt.ignoring().run(this::throwsChecked));
-	}
-	
-	@Test
-	public void testPrinting()
-	{
-		expect("THE STACKTRACES BELOW ARE EXPECTED.");
-		
-		Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.printing().get(this::divideByZero));
-		assertTrue(divided.isEmpty());
-		
-		expect("THESE STACKTRACES ARE EXPECTED.");
-		
-		assertDoesNotThrow(() -> Attempt.printing().run(this::throwsChecked));
-		
-		expect("NO MORE STACKTRACES ARE EXPECTED.");
-	}
-	
-	@Test
-	public void testRethrow()
-	{
-		assertThrows(Rethrow.class, () -> Attempt.rethrowing().get(this::divideByZero));
-		assertThrows(Rethrow.class, () -> Attempt.rethrowing().run(this::throwsChecked));
-	}
+    private static final IntSupplier ZERO = () -> 0;
+    
+    private int divideByZero() { return 1 / ZERO.getAsInt(); }
+    
+    private void throwsChecked() throws Exception { throw new Exception(); }
+    
+    private void expect(String message){ for (int i = 0; i < 3; i++) { System.err.println("\n" + message + "\n"); } }
+    
+    @Test
+    public void testIgnoring()
+    {
+        Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.ignoring().get(this::divideByZero));
+        assertTrue(divided.isEmpty());
+        
+        assertDoesNotThrow(() -> Attempt.ignoring().run(this::throwsChecked));
+    }
+    
+    @Test
+    public void testPrinting()
+    {
+        expect("THE STACKTRACES BELOW ARE EXPECTED.");
+        
+        Optional<Integer> divided = assertDoesNotThrow(() -> Attempt.printing().get(this::divideByZero));
+        assertTrue(divided.isEmpty());
+        
+        expect("THESE STACKTRACES ARE EXPECTED.");
+        
+        assertDoesNotThrow(() -> Attempt.printing().run(this::throwsChecked));
+        
+        expect("NO MORE STACKTRACES ARE EXPECTED.");
+    }
+    
+    @Test
+    public void testRethrow()
+    {
+        assertThrows(Rethrow.class, () -> Attempt.rethrowing().get(this::divideByZero));
+        assertThrows(Rethrow.class, () -> Attempt.rethrowing().run(this::throwsChecked));
+    }
 }
