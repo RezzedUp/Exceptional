@@ -7,9 +7,6 @@
  */
 package com.rezzedup.util.exceptional.checked;
 
-import com.rezzedup.util.exceptional.Rethrow;
-
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -23,26 +20,6 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface CheckedSupplier<T, E extends Throwable>
 {
-    /**
-     * Converts a {@code CheckedSupplier} into a regular {@code Supplier}.
-     * Any caught exceptions will be rethrown with: {@link Rethrow#caught(Throwable)}
-     *
-     * @param supplier  the checked supplier
-     * @param <T>       return type
-     *
-     * @return the CheckedSupplier wrapped by an unchecked Supplier
-     */
-    static <T> Supplier<T> unchecked(CheckedSupplier<T, ? extends Exception> supplier)
-    {
-        Objects.requireNonNull(supplier, "supplier");
-        
-        return () ->
-        {
-            try { return supplier.get(); }
-            catch (Exception e) { throw Rethrow.caught(e); }
-        };
-    }
-    
     /**
      * Gets a result.
      *

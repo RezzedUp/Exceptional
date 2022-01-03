@@ -51,5 +51,4 @@ public class Rethrow extends RuntimeException
     {
         return super.getCause();
     }
-    
 }

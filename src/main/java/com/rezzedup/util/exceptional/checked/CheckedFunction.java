@@ -7,9 +7,6 @@
  */
 package com.rezzedup.util.exceptional.checked;
 
-import com.rezzedup.util.exceptional.Rethrow;
-
-import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -24,27 +21,6 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface CheckedFunction<T, R, E extends Throwable>
 {
-    /**
-     * Converts a {@code CheckedFunction} into a regular {@code Function}.
-     * Any caught exceptions will be rethrown with: {@link Rethrow#caught(Throwable)}
-     *
-     * @param function  the checked function
-     * @param <T>       argument type
-     * @param <R>       return type
-     *
-     * @return the CheckedFunction wrapped by an unchecked Function
-     */
-    static <T, R> Function<T, R> unchecked(CheckedFunction<T, R, ? extends Exception> function)
-    {
-        Objects.requireNonNull(function, "function");
-        
-        return t ->
-        {
-            try { return function.apply(t); }
-            catch (Exception e) { throw Rethrow.caught(e); }
-        };
-    }
-    
     /**
      * Applies this function to the given argument.
      *

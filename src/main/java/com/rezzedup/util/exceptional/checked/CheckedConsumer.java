@@ -7,9 +7,6 @@
  */
 package com.rezzedup.util.exceptional.checked;
 
-import com.rezzedup.util.exceptional.Rethrow;
-
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -23,26 +20,6 @@ import java.util.function.Consumer;
 @FunctionalInterface
 public interface CheckedConsumer<T, E extends Throwable>
 {
-    /**
-     * Converts a {@code CheckedConsumer} into a regular {@code Consumer}.
-     * Any caught exceptions will be rethrown with: {@link Rethrow#caught(Throwable)}
-     *
-     * @param consumer  the checked consumer
-     * @param <T>       argument type
-     *
-     * @return the CheckedConsumer wrapped by an unchecked Consumer
-     */
-    static <T> Consumer<T> unchecked(CheckedConsumer<T, ? extends Exception> consumer)
-    {
-        Objects.requireNonNull(consumer, "consumer");
-        
-        return t ->
-        {
-            try { consumer.accept(t); }
-            catch (Exception e) { throw Rethrow.caught(e); }
-        };
-    }
-    
     /**
      * Performs this operation on the given argument.
      *
