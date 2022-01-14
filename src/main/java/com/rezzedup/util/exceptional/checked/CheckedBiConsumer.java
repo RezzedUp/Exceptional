@@ -7,6 +7,9 @@
  */
 package com.rezzedup.util.exceptional.checked;
 
+import com.rezzedup.util.exceptional.Catcher;
+
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /**
@@ -19,7 +22,7 @@ import java.util.function.BiConsumer;
  * @see BiConsumer
  */
 @FunctionalInterface
-public interface CheckedBiConsumer<T, U, E extends Throwable>
+public interface CheckedBiConsumer<T, U, E extends Throwable> extends Catcher.Swap<Throwable, CheckedBiConsumer<T, U, E>>, BiConsumer<T, U>
 {
     /**
      * Performs this operation on the given arguments.
@@ -29,5 +32,38 @@ public interface CheckedBiConsumer<T, U, E extends Throwable>
      *
      * @throws E a checked exception
      */
-    void accept(T t, U u) throws E;
+    void acceptOrThrow(T t, U u) throws E;
+    
+    @Override
+    default void accept(T t, U u)
+    {
+        try { acceptOrThrow(t, u); }
+        catch (Throwable e) { catcher().handleSafely(e); }
+    }
+    
+    @Override
+    default Catcher<Throwable> catcher() { return Catcher::rethrow; }
+    
+    @Override
+    default CheckedBiConsumer<T, U, E> catcher(Catcher<Throwable> catcher)
+    {
+        Objects.requireNonNull(catcher, "catcher");
+        if (catcher == catcher()) { return this; }
+        
+        class Impl<_T, _U, _E> implements CheckedBiConsumer<T, U, E>
+        {
+            CheckedBiConsumer<T, U, E> origin() { return CheckedBiConsumer.this; }
+    
+            @Override
+            public void acceptOrThrow(T t, U u) throws E { origin().acceptOrThrow(t, u); }
+    
+            @Override
+            public Catcher<Throwable> catcher() { return catcher; }
+            
+            @Override
+            public String toString() { return Checked.implToString(getClass(), origin(), catcher()); }
+        }
+        
+        return (this instanceof Impl) ? ((Impl<T, U, E>) this).origin().catcher(catcher) : new Impl<>();
+    }
 }

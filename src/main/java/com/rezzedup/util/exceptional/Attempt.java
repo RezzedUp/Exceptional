@@ -18,7 +18,7 @@ import java.util.Optional;
  * Attempts to perform potentially exceptional actions, automatically handling any thrown exception.
  */
 @FunctionalInterface
-public interface Attempt
+public interface Attempt extends Catcher.Source<Exception>
 {
     /**
      * Creates a new Attempt with the provided catcher.
@@ -26,10 +26,11 @@ public interface Attempt
      * @param catcher   exception catcher
      * @return a new attempt
      */
+    @SuppressWarnings("unchecked")
     static Attempt with(Catcher<? super Exception> catcher)
     {
         Objects.requireNonNull(catcher, "catcher");
-        return () -> catcher;
+        return () -> (Catcher<Exception>) catcher;
     }
     
     /**
@@ -57,13 +58,6 @@ public interface Attempt
     static Attempt rethrowing() { return () -> Catcher::rethrow; }
     
     /**
-     * Gets the catcher used to handle exceptions.
-     *
-     * @return the exception handler
-     */
-    Catcher<? super Exception> catcher();
-    
-    /**
      * Runs the potentially exceptional runnable, automatically handling any thrown exception
      * with {@link #catcher()}.
      *
@@ -71,8 +65,8 @@ public interface Attempt
      */
     default void run(CheckedRunnable<? extends Exception> runnable)
     {
-        try { runnable.run(); }
-        catch (Exception e) { catcher().accept(e); }
+        try { runnable.runOrThrow(); }
+        catch (Exception e) { catcher().handleSafely(e); }
     }
     
     /**
@@ -87,8 +81,8 @@ public interface Attempt
     @SuppressWarnings("ConstantConditions")
     default <T> Optional<T> get(CheckedSupplier<@NullOr T, ? extends Exception> supplier)
     {
-        try { return Optional.ofNullable(supplier.get()); }
-        catch (Exception e) { catcher().accept(e); }
+        try { return Optional.ofNullable(supplier.getOrThrow()); }
+        catch (Exception e) { catcher().handleSafely(e); }
         return Optional.empty();
     }
 }

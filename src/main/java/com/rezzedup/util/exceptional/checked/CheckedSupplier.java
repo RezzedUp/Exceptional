@@ -7,6 +7,10 @@
  */
 package com.rezzedup.util.exceptional.checked;
 
+import com.rezzedup.util.exceptional.Catcher;
+import pl.tlinkowski.annotation.basic.NullOr;
+
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -18,7 +22,7 @@ import java.util.function.Supplier;
  * @see Supplier
  */
 @FunctionalInterface
-public interface CheckedSupplier<T, E extends Throwable>
+public interface CheckedSupplier<T, E extends Throwable> extends Catcher.Swap<Throwable, CheckedSupplier<T, E>>, Supplier<T>
 {
     /**
      * Gets a result.
@@ -26,5 +30,42 @@ public interface CheckedSupplier<T, E extends Throwable>
      * @return a result
      * @throws E a checked exception
      */
-    T get() throws E;
+    T getOrThrow() throws E;
+    
+    @Override
+    default @NullOr T get()
+    {
+        try { return getOrThrow(); }
+        catch (Throwable e)
+        {
+            catcher().handleSafely(e);
+            return null;
+        }
+    }
+    
+    @Override
+    default Catcher<Throwable> catcher() { return Catcher::rethrow; }
+    
+    @Override
+    default CheckedSupplier<T, E> catcher(Catcher<Throwable> catcher)
+    {
+        Objects.requireNonNull(catcher, "catcher");
+        if (catcher == catcher()) { return this; }
+        
+        class Impl<_T, _E> implements CheckedSupplier<T, E>
+        {
+            CheckedSupplier<T, E> origin() { return CheckedSupplier.this; }
+            
+            @Override
+            public T getOrThrow() throws E { return origin().getOrThrow(); }
+            
+            @Override
+            public Catcher<Throwable> catcher() { return catcher; }
+            
+            @Override
+            public String toString() { return Checked.implToString(getClass(), origin(), catcher()); }
+        }
+        
+        return (this instanceof Impl) ? ((Impl<T, E>) this).origin().catcher(catcher) : new Impl<>();
+    }
 }

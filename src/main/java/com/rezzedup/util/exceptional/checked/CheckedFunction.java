@@ -7,6 +7,10 @@
  */
 package com.rezzedup.util.exceptional.checked;
 
+import com.rezzedup.util.exceptional.Catcher;
+import pl.tlinkowski.annotation.basic.NullOr;
+
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -19,7 +23,7 @@ import java.util.function.Function;
  * @see Function
  */
 @FunctionalInterface
-public interface CheckedFunction<T, R, E extends Throwable>
+public interface CheckedFunction<T, R, E extends Throwable> extends Catcher.Swap<Throwable, CheckedFunction<T, R, E>>, Function<T, R>
 {
     /**
      * Applies this function to the given argument.
@@ -29,5 +33,42 @@ public interface CheckedFunction<T, R, E extends Throwable>
      * @return the function result
      * @throws E a checked exception
      */
-    R apply(T t) throws E;
+    R applyOrThrow(T t) throws E;
+    
+    @Override
+    default @NullOr R apply(T t)
+    {
+        try { return applyOrThrow(t); }
+        catch (Throwable e)
+        {
+            catcher().handleSafely(e);
+            return null;
+        }
+    }
+    
+    @Override
+    default Catcher<Throwable> catcher() { return Catcher::rethrow; }
+    
+    @Override
+    default CheckedFunction<T, R, E> catcher(Catcher<Throwable> catcher)
+    {
+        Objects.requireNonNull(catcher, "catcher");
+        if (catcher == catcher()) { return this; }
+        
+        class Impl<_T, _R, _E> implements CheckedFunction<T, R, E>
+        {
+            CheckedFunction<T, R, E> origin() { return CheckedFunction.this; }
+            
+            @Override
+            public R applyOrThrow(T t) throws E { return origin().applyOrThrow(t); }
+    
+            @Override
+            public Catcher<Throwable> catcher() { return catcher; }
+            
+            @Override
+            public String toString() { return Checked.implToString(getClass(), origin(), catcher()); }
+        }
+        
+        return (this instanceof Impl) ? ((Impl<T, R, E>) this).origin().catcher(catcher) : new Impl<>();
+    }
 }

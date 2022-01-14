@@ -7,6 +7,9 @@
  */
 package com.rezzedup.util.exceptional.checked;
 
+import com.rezzedup.util.exceptional.Catcher;
+
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -18,7 +21,7 @@ import java.util.function.Consumer;
  * @see Consumer
  */
 @FunctionalInterface
-public interface CheckedConsumer<T, E extends Throwable>
+public interface CheckedConsumer<T, E extends Throwable> extends Catcher.Swap<Throwable, CheckedConsumer<T, E>>, Consumer<T>
 {
     /**
      * Performs this operation on the given argument.
@@ -27,5 +30,38 @@ public interface CheckedConsumer<T, E extends Throwable>
      *
      * @throws E a checked exception
      */
-    void accept(T t) throws E;
+    void acceptOrThrow(T t) throws E;
+    
+    @Override
+    default void accept(T t)
+    {
+        try { acceptOrThrow(t); }
+        catch (Throwable e) { catcher().handleSafely(e); }
+    }
+    
+    @Override
+    default Catcher<Throwable> catcher() { return Catcher::rethrow; }
+    
+    @Override
+    default CheckedConsumer<T, E> catcher(Catcher<Throwable> catcher)
+    {
+        Objects.requireNonNull(catcher, "catcher");
+        if (catcher == catcher()) { return this; }
+        
+        class Impl<_T, _E> implements CheckedConsumer<T, E>
+        {
+            CheckedConsumer<T, E> origin() { return CheckedConsumer.this; }
+    
+            @Override
+            public void acceptOrThrow(T t) throws E { origin().acceptOrThrow(t); }
+    
+            @Override
+            public Catcher<Throwable> catcher() { return catcher; }
+            
+            @Override
+            public String toString() { return Checked.implToString(getClass(), origin(), catcher()); }
+        }
+        
+        return (this instanceof Impl) ? ((Impl<T, E>) this).origin().catcher(catcher) : new Impl<>();
+    }
 }

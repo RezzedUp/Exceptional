@@ -62,4 +62,34 @@ public interface Catcher<E extends Throwable> extends Consumer<E>
     {
         throw Rethrow.caught(exception);
     }
+    
+    void handle(E exception);
+    
+    default void handleSafely(E exception)
+    {
+        if (exception instanceof Error) { throw (Error) exception; }
+        if (exception instanceof InterruptedException) { throw Sneaky.smuggle(exception); }
+        handle(exception);
+    }
+    
+    /**
+     * Consumer-compatibility method, which simply forwards the exception to {@link #handleSafely(Throwable)}.
+     *
+     * @param exception     the exception
+     *
+     * @deprecated use {@link #handleSafely(Throwable)} instead
+     */
+    @Deprecated
+    @Override
+    default void accept(E exception) { handleSafely(exception); }
+    
+    interface Source<E extends Throwable>
+    {
+        Catcher<E> catcher();
+    }
+    
+    interface Swap<E extends Throwable, S extends Swap<E, S>> extends Source<E>
+    {
+        S catcher(Catcher<E> catcher);
+    }
 }

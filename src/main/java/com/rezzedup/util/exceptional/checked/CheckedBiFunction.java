@@ -7,6 +7,10 @@
  */
 package com.rezzedup.util.exceptional.checked;
 
+import com.rezzedup.util.exceptional.Catcher;
+import pl.tlinkowski.annotation.basic.NullOr;
+
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
@@ -20,7 +24,7 @@ import java.util.function.BiFunction;
  * @see BiFunction
  */
 @FunctionalInterface
-public interface CheckedBiFunction<T, U, R, E extends Throwable>
+public interface CheckedBiFunction<T, U, R, E extends Throwable> extends Catcher.Swap<Throwable, CheckedBiFunction<T, U, R, E>>, BiFunction<T, U, R>
 {
     /**
      * Applies this function to the given arguments.
@@ -31,5 +35,42 @@ public interface CheckedBiFunction<T, U, R, E extends Throwable>
      * @return the function result
      * @throws E a checked exception
      */
-    R accept(T t, U u) throws E;
+    R applyOrThrow(T t, U u) throws E;
+    
+    @Override
+    default @NullOr R apply(T t, U u)
+    {
+        try { return applyOrThrow(t, u); }
+        catch (Throwable e)
+        {
+            catcher().handleSafely(e);
+            return null;
+        }
+    }
+    
+    @Override
+    default Catcher<Throwable> catcher() { return Catcher::rethrow; }
+    
+    @Override
+    default CheckedBiFunction<T, U, R, E> catcher(Catcher<Throwable> catcher)
+    {
+        Objects.requireNonNull(catcher, "catcher");
+        if (catcher == catcher()) { return this; }
+        
+        class Impl<_T, _U, _R, _E> implements CheckedBiFunction<T, U, R, E>
+        {
+            CheckedBiFunction<T, U, R, E> origin() { return CheckedBiFunction.this; }
+    
+            @Override
+            public R applyOrThrow(T t, U u) throws E { return origin().applyOrThrow(t, u); }
+    
+            @Override
+            public Catcher<Throwable> catcher() { return catcher; }
+            
+            @Override
+            public String toString() { return Checked.implToString(getClass(), origin(), catcher()); }
+        }
+        
+        return (this instanceof Impl) ? ((Impl<T, U, R, E>) this).origin().catcher(catcher) : new Impl<>();
+    }
 }
