@@ -24,6 +24,16 @@ import java.util.function.BiConsumer;
 @FunctionalInterface
 public interface CheckedBiConsumer<T, U, E extends Throwable> extends Catcher.Swap<Throwable, CheckedBiConsumer<T, U, E>>, BiConsumer<T, U>
 {
+    static <T, U, E extends Throwable> CheckedBiConsumer<T, U, E> of(CheckedBiConsumer<T, U, E> biConsumer)
+    {
+        return biConsumer;
+    }
+    
+    static <T, U, E extends Throwable> CheckedBiConsumer<T, U, E> of(Catcher<Throwable> catcher, CheckedBiConsumer<T, U, E> biConsumer)
+    {
+        return biConsumer.catcher(catcher);
+    }
+    
     /**
      * Performs this operation on the given arguments.
      *

@@ -25,6 +25,16 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface CheckedFunction<T, R, E extends Throwable> extends Catcher.Swap<Throwable, CheckedFunction<T, R, E>>, Function<T, R>
 {
+    static <T, R, E extends Throwable> CheckedFunction<T, R, E> of(CheckedFunction<T, R, E> function)
+    {
+        return function;
+    }
+    
+    static <T, R, E extends Throwable> CheckedFunction<T, R, E> of(Catcher<Throwable> catcher, CheckedFunction<T, R, E> function)
+    {
+        return function.catcher(catcher);
+    }
+    
     /**
      * Applies this function to the given argument.
      *

@@ -23,6 +23,16 @@ import java.util.function.Consumer;
 @FunctionalInterface
 public interface CheckedConsumer<T, E extends Throwable> extends Catcher.Swap<Throwable, CheckedConsumer<T, E>>, Consumer<T>
 {
+    static <T, E extends Throwable> CheckedConsumer<T, E> of(CheckedConsumer<T, E> consumer)
+    {
+        return consumer;
+    }
+    
+    static <T, E extends Throwable> CheckedConsumer<T, E> of(Catcher<Throwable> catcher, CheckedConsumer<T, E> consumer)
+    {
+        return consumer.catcher(catcher);
+    }
+    
     /**
      * Performs this operation on the given argument.
      *
