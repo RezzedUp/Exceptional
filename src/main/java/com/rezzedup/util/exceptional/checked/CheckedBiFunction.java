@@ -51,11 +51,8 @@ public interface CheckedBiFunction<T, U, R, E extends Throwable> extends Catcher
     default @NullOr R apply(T t, U u)
     {
         try { return applyOrThrow(t, u); }
-        catch (Throwable e)
-        {
-            catcher().handleOrRethrowError(e);
-            return null;
-        }
+        catch (Throwable e) { catcher().handleOrRethrowError(e); }
+        return null;
     }
     
     @Override
@@ -70,10 +67,10 @@ public interface CheckedBiFunction<T, U, R, E extends Throwable> extends Catcher
         class Impl<_T, _U, _R, _E> implements CheckedBiFunction<T, U, R, E>
         {
             CheckedBiFunction<T, U, R, E> origin() { return CheckedBiFunction.this; }
-    
+            
             @Override
             public R applyOrThrow(T t, U u) throws E { return origin().applyOrThrow(t, u); }
-    
+            
             @Override
             public Catcher<Throwable> catcher() { return catcher; }
             

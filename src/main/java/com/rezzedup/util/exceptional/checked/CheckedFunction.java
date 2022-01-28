@@ -49,11 +49,8 @@ public interface CheckedFunction<T, R, E extends Throwable> extends Catcher.Swap
     default @NullOr R apply(T t)
     {
         try { return applyOrThrow(t); }
-        catch (Throwable e)
-        {
-            catcher().handleOrRethrowError(e);
-            return null;
-        }
+        catch (Throwable e) { catcher().handleOrRethrowError(e); }
+        return null;
     }
     
     @Override
@@ -71,7 +68,7 @@ public interface CheckedFunction<T, R, E extends Throwable> extends Catcher.Swap
             
             @Override
             public R applyOrThrow(T t) throws E { return origin().applyOrThrow(t); }
-    
+            
             @Override
             public Catcher<Throwable> catcher() { return catcher; }
             

@@ -61,10 +61,10 @@ public interface CheckedConsumer<T, E extends Throwable> extends Catcher.Swap<Th
         class Impl<_T, _E> implements CheckedConsumer<T, E>
         {
             CheckedConsumer<T, E> origin() { return CheckedConsumer.this; }
-    
+            
             @Override
             public void acceptOrThrow(T t) throws E { origin().acceptOrThrow(t); }
-    
+            
             @Override
             public Catcher<Throwable> catcher() { return catcher; }
             

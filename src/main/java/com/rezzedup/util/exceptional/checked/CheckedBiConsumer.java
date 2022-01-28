@@ -63,10 +63,10 @@ public interface CheckedBiConsumer<T, U, E extends Throwable> extends Catcher.Sw
         class Impl<_T, _U, _E> implements CheckedBiConsumer<T, U, E>
         {
             CheckedBiConsumer<T, U, E> origin() { return CheckedBiConsumer.this; }
-    
+            
             @Override
             public void acceptOrThrow(T t, U u) throws E { origin().acceptOrThrow(t, u); }
-    
+            
             @Override
             public Catcher<Throwable> catcher() { return catcher; }
             

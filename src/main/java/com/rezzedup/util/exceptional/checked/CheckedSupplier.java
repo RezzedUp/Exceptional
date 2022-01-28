@@ -46,11 +46,8 @@ public interface CheckedSupplier<T, E extends Throwable> extends Catcher.Swap<Th
     default @NullOr T get()
     {
         try { return getOrThrow(); }
-        catch (Throwable e)
-        {
-            catcher().handleOrRethrowError(e);
-            return null;
-        }
+        catch (Throwable e) { catcher().handleOrRethrowError(e); }
+        return null;
     }
     
     @Override

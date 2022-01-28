@@ -57,10 +57,10 @@ public interface CheckedRunnable<E extends Throwable> extends Catcher.Swap<Throw
         class Impl<_E> implements CheckedRunnable<E>
         {
             CheckedRunnable<E> origin() { return CheckedRunnable.this; }
-    
+            
             @Override
             public void runOrThrow() throws E { origin().runOrThrow(); }
-    
+            
             @Override
             public Catcher<Throwable> catcher() { return catcher; }
             
