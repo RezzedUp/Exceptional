@@ -46,7 +46,7 @@ public interface CheckedConsumer<T, E extends Throwable> extends Catcher.Swap<Th
     default void accept(T t)
     {
         try { acceptOrThrow(t); }
-        catch (Throwable e) { catcher().handleSafely(e); }
+        catch (Throwable e) { catcher().handleOrRethrowError(e); }
     }
     
     @Override

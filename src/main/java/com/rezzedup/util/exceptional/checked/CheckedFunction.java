@@ -51,7 +51,7 @@ public interface CheckedFunction<T, R, E extends Throwable> extends Catcher.Swap
         try { return applyOrThrow(t); }
         catch (Throwable e)
         {
-            catcher().handleSafely(e);
+            catcher().handleOrRethrowError(e);
             return null;
         }
     }

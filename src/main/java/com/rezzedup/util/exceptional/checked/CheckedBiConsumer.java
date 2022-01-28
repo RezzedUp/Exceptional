@@ -48,7 +48,7 @@ public interface CheckedBiConsumer<T, U, E extends Throwable> extends Catcher.Sw
     default void accept(T t, U u)
     {
         try { acceptOrThrow(t, u); }
-        catch (Throwable e) { catcher().handleSafely(e); }
+        catch (Throwable e) { catcher().handleOrRethrowError(e); }
     }
     
     @Override

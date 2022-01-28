@@ -12,13 +12,13 @@ public class Sneaky
     private Sneaky() { throw new UnsupportedOperationException(); }
     
     @SuppressWarnings("unchecked")
-    private static <E extends Throwable> void sneak(Throwable exception) throws E { throw (E) exception; }
+    private static <E extends Throwable> void smuggle(Throwable exception) throws E { throw (E) exception; }
     
-    public static RuntimeException smuggle(Throwable throwable)
+    public static RuntimeException rethrow(Throwable throwable)
     {
-        sneak(throwable);
+        smuggle(throwable);
         throw new AssertionError();
     }
     
-    public static <E extends Throwable> void rethrow(E exception) { throw smuggle(exception); }
+    public static <E extends Throwable> void catcher(E exception) { throw rethrow(exception); }
 }

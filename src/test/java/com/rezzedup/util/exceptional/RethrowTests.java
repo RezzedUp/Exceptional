@@ -27,7 +27,7 @@ public class RethrowTests
     public void testSneaky()
     {
         assertThrows(IOException.class, () -> {
-            throw Sneaky.smuggle(new IOException());
+            throw Sneaky.rethrow(new IOException());
         });
     }
 }

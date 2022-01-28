@@ -66,7 +66,7 @@ public interface Attempt extends Catcher.Source<Exception>
     default void run(CheckedRunnable<? extends Exception> runnable)
     {
         try { runnable.runOrThrow(); }
-        catch (Exception e) { catcher().handleSafely(e); }
+        catch (Exception e) { catcher().handleOrRethrowError(e); }
     }
     
     /**
@@ -82,7 +82,7 @@ public interface Attempt extends Catcher.Source<Exception>
     default <T> Optional<T> get(CheckedSupplier<@NullOr T, ? extends Exception> supplier)
     {
         try { return Optional.ofNullable(supplier.getOrThrow()); }
-        catch (Exception e) { catcher().handleSafely(e); }
+        catch (Exception e) { catcher().handleOrRethrowError(e); }
         return Optional.empty();
     }
 }

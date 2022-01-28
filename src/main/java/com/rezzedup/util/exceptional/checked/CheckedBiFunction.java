@@ -53,7 +53,7 @@ public interface CheckedBiFunction<T, U, R, E extends Throwable> extends Catcher
         try { return applyOrThrow(t, u); }
         catch (Throwable e)
         {
-            catcher().handleSafely(e);
+            catcher().handleOrRethrowError(e);
             return null;
         }
     }

@@ -48,7 +48,7 @@ public interface CheckedSupplier<T, E extends Throwable> extends Catcher.Swap<Th
         try { return getOrThrow(); }
         catch (Throwable e)
         {
-            catcher().handleSafely(e);
+            catcher().handleOrRethrowError(e);
             return null;
         }
     }

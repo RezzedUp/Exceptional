@@ -42,7 +42,7 @@ public interface CheckedRunnable<E extends Throwable> extends Catcher.Swap<Throw
     default void run()
     {
         try { runOrThrow(); }
-        catch (Throwable e) { catcher().handleSafely(e); }
+        catch (Throwable e) { catcher().handleOrRethrowError(e); }
     }
     
     @Override

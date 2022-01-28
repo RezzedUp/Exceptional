@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="build-production" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="build-run-tests" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -9,13 +9,15 @@
             <set />
           </option>
           <option name="goals">
-            <list />
+            <list>
+              <option value="clean" />
+              <option value="license:format" />
+              <option value="verify" />
+            </list>
           </option>
           <option name="pomFileName" />
           <option name="profilesMap">
-            <map>
-              <entry key="production" value="true" />
-            </map>
+            <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
           <option name="workingDirPath" value="$PROJECT_DIR$" />
