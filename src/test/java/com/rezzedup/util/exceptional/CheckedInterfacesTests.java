@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CheckedInterfacesTests
 {
-    private static void testImplCatcherSwap(Catcher.Swap<Throwable, ?> origin)
+    private static void testImplCatcherSwap(Catcher.Swap<?, Throwable> origin)
     {
         Catcher<Throwable> catcher = Catcher::ignore;
-        Catcher.Swap<Throwable, ?> swapped = origin.catcher(catcher);
+        Catcher.Swap<?, Throwable> swapped = origin.catcher(catcher);
         
         // Original catcher should obviously be an entirely different instance.
         assertNotSame(catcher, origin.catcher());
@@ -35,7 +35,7 @@ public class CheckedInterfacesTests
         // Make sure that if the same catcher is received, the 'swappable' simply returns itself.
         assertSame(swapped, swapped.catcher(catcher));
         
-        Catcher.Swap<Throwable, ?> again = swapped.catcher(Catcher::print);
+        Catcher.Swap<?, Throwable> again = swapped.catcher(Catcher::print);
         
         // Ensure that a new 'swappable' instance is returned when a different catcher is received, however.
         assertNotSame(swapped, again);

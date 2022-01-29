@@ -11,28 +11,28 @@ import com.rezzedup.util.exceptional.Catcher;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.Objects;
-import java.util.function.BinaryOperator;
+import java.util.function.DoubleFunction;
 
 @FunctionalInterface
-public interface CheckedBinaryOperator<T, E extends Throwable>
-    extends Catcher.Swap<CheckedBinaryOperator<T, E>, Throwable>, BinaryOperator<T>
+public interface CheckedDoubleFunction<R, E extends Throwable>
+    extends Catcher.Swap<CheckedDoubleFunction<R, E>, Throwable>, DoubleFunction<R>
 {
-    static <T, E extends Throwable> CheckedBinaryOperator<T, E> of(CheckedBinaryOperator<T, E> binaryOperator)
+    static <R, E extends Throwable> CheckedDoubleFunction<R, E> of(CheckedDoubleFunction<R, E> function)
     {
-        return binaryOperator;
+        return function;
     }
     
-    static <T, E extends Throwable> CheckedBinaryOperator<T, E> of(Catcher<Throwable> catcher, CheckedBinaryOperator<T, E> binaryOperator)
+    static <R, E extends Throwable> CheckedDoubleFunction<R, E> of(Catcher<Throwable> catcher, CheckedDoubleFunction<R, E> function)
     {
-        return binaryOperator.catcher(catcher);
+        return function.catcher(catcher);
     }
     
-    T applyOrThrow(T t, T t2) throws E;
+    R applyOrThrow(double value) throws E;
     
     @Override
-    default @NullOr T apply(T t, T t2)
+    default @NullOr R apply(double value)
     {
-        try { return applyOrThrow(t, t2); }
+        try { return applyOrThrow(value); }
         catch (Throwable e) { catcher().handleOrRethrowError(e); }
         return null;
     }
@@ -41,17 +41,17 @@ public interface CheckedBinaryOperator<T, E extends Throwable>
     default Catcher<Throwable> catcher() { return Catcher::rethrow; }
     
     @Override
-    default CheckedBinaryOperator<T, E> catcher(Catcher<Throwable> catcher)
+    default CheckedDoubleFunction<R, E> catcher(Catcher<Throwable> catcher)
     {
         Objects.requireNonNull(catcher, "catcher");
         if (catcher == catcher()) { return this; }
         
-        class Impl<_T, _E> implements CheckedBinaryOperator<T, E>
+        class Impl<_R, _E> implements CheckedDoubleFunction<R, E>
         {
-            CheckedBinaryOperator<T, E> origin() { return CheckedBinaryOperator.this; }
+            CheckedDoubleFunction<R, E> origin() { return CheckedDoubleFunction.this; }
             
             @Override
-            public T applyOrThrow(T t, T t2) throws E { return origin().applyOrThrow(t, t2); }
+            public R applyOrThrow(double value) throws E { return origin().applyOrThrow(value); }
             
             @Override
             public Catcher<Throwable> catcher() { return catcher; }
@@ -60,6 +60,6 @@ public interface CheckedBinaryOperator<T, E extends Throwable>
             public String toString() { return Checked.implToString(getClass(), origin(), catcher()); }
         }
         
-        return (this instanceof Impl) ? ((Impl<T, E>) this).origin().catcher(catcher) : new Impl<>();
+        return (this instanceof Impl) ? ((Impl<R, E>) this).origin().catcher(catcher) : new Impl<>();
     }
 }

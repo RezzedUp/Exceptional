@@ -23,7 +23,8 @@ import java.util.function.Function;
  * @see Function
  */
 @FunctionalInterface
-public interface CheckedFunction<T, R, E extends Throwable> extends Catcher.Swap<Throwable, CheckedFunction<T, R, E>>, Function<T, R>
+public interface CheckedFunction<T, R, E extends Throwable>
+    extends Catcher.Swap<CheckedFunction<T, R, E>, Throwable>, Function<T, R>
 {
     static <T, R, E extends Throwable> CheckedFunction<T, R, E> of(CheckedFunction<T, R, E> function)
     {

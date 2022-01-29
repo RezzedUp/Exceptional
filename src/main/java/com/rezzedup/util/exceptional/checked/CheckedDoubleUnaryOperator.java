@@ -10,47 +10,47 @@ package com.rezzedup.util.exceptional.checked;
 import com.rezzedup.util.exceptional.Catcher;
 
 import java.util.Objects;
-import java.util.function.BooleanSupplier;
+import java.util.function.DoubleUnaryOperator;
 
 @FunctionalInterface
-public interface CheckedBooleanSupplier<E extends Throwable>
-    extends Catcher.Swap<CheckedBooleanSupplier<E>, Throwable>, BooleanSupplier
+public interface CheckedDoubleUnaryOperator<E extends Throwable>
+    extends Catcher.Swap<CheckedDoubleUnaryOperator<E>, Throwable>, DoubleUnaryOperator
 {
-    static <E extends Throwable> CheckedBooleanSupplier<E> of(CheckedBooleanSupplier<E> supplier)
+    static <E extends Throwable> CheckedDoubleUnaryOperator<E> of(CheckedDoubleUnaryOperator<E> unaryOperator)
     {
-        return supplier;
+        return unaryOperator;
     }
     
-    static <E extends Throwable> CheckedBooleanSupplier<E> of(Catcher<Throwable> catcher, CheckedBooleanSupplier<E> supplier)
+    static <E extends Throwable> CheckedDoubleUnaryOperator<E> of(Catcher<Throwable> catcher, CheckedDoubleUnaryOperator<E> unaryOperator)
     {
-        return supplier.catcher(catcher);
+        return unaryOperator.catcher(catcher);
     }
     
-    boolean getAsBooleanOrThrow() throws E;
+    double applyAsDoubleOrThrow(double operand) throws E;
     
     @Override
-    default boolean getAsBoolean()
+    default double applyAsDouble(double operand)
     {
-        try { return getAsBooleanOrThrow(); }
+        try { return applyAsDoubleOrThrow(operand); }
         catch (Throwable e) { catcher().handleOrRethrowError(e); }
-        return false;
+        return 0.0;
     }
     
     @Override
     default Catcher<Throwable> catcher() { return Catcher::rethrow; }
     
     @Override
-    default CheckedBooleanSupplier<E> catcher(Catcher<Throwable> catcher)
+    default CheckedDoubleUnaryOperator<E> catcher(Catcher<Throwable> catcher)
     {
         Objects.requireNonNull(catcher, "catcher");
         if (catcher == catcher()) { return this; }
         
-        class Impl<_E> implements CheckedBooleanSupplier<E>
+        class Impl<_E> implements CheckedDoubleUnaryOperator<E>
         {
-            CheckedBooleanSupplier<E> origin() { return CheckedBooleanSupplier.this; }
+            CheckedDoubleUnaryOperator<E> origin() { return CheckedDoubleUnaryOperator.this; }
             
             @Override
-            public boolean getAsBooleanOrThrow() throws E { return origin().getAsBooleanOrThrow(); }
+            public double applyAsDoubleOrThrow(double operand) throws E { return origin().applyAsDoubleOrThrow(operand); }
             
             @Override
             public Catcher<Throwable> catcher() { return catcher; }

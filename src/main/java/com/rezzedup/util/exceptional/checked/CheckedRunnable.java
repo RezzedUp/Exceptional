@@ -19,7 +19,8 @@ import java.util.Objects;
  * @see Runnable
  */
 @FunctionalInterface
-public interface CheckedRunnable<E extends Throwable> extends Catcher.Swap<Throwable, CheckedRunnable<E>>, Runnable
+public interface CheckedRunnable<E extends Throwable>
+    extends Catcher.Swap<CheckedRunnable<E>, Throwable>, Runnable
 {
     static <E extends Throwable> CheckedRunnable<E> of(CheckedRunnable<E> runnable)
     {

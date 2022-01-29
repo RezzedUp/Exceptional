@@ -13,7 +13,8 @@ import java.util.Objects;
 import java.util.function.BiPredicate;
 
 @FunctionalInterface
-public interface CheckedBiPredicate<T, U, E extends Throwable> extends BiPredicate<T, U>
+public interface CheckedBiPredicate<T, U, E extends Throwable>
+    extends Catcher.Swap<CheckedBiPredicate<T, U, E>, Throwable>, BiPredicate<T, U>
 {
     static <T, U, E extends Throwable> CheckedBiPredicate<T, U, E> of(CheckedBiPredicate<T, U, E> biPredicate)
     {
@@ -35,8 +36,10 @@ public interface CheckedBiPredicate<T, U, E extends Throwable> extends BiPredica
         return false;
     }
     
+    @Override
     default Catcher<Throwable> catcher() { return Catcher::rethrow; }
     
+    @Override
     default CheckedBiPredicate<T, U, E> catcher(Catcher<Throwable> catcher)
     {
         Objects.requireNonNull(catcher, "catcher");

@@ -10,47 +10,47 @@ package com.rezzedup.util.exceptional.checked;
 import com.rezzedup.util.exceptional.Catcher;
 
 import java.util.Objects;
-import java.util.function.BooleanSupplier;
+import java.util.function.DoubleToLongFunction;
 
 @FunctionalInterface
-public interface CheckedBooleanSupplier<E extends Throwable>
-    extends Catcher.Swap<CheckedBooleanSupplier<E>, Throwable>, BooleanSupplier
+public interface CheckedDoubleToLongFunction<E extends Throwable>
+    extends Catcher.Swap<CheckedDoubleToLongFunction<E>, Throwable>, DoubleToLongFunction
 {
-    static <E extends Throwable> CheckedBooleanSupplier<E> of(CheckedBooleanSupplier<E> supplier)
+    static <E extends Throwable> CheckedDoubleToLongFunction<E> of(CheckedDoubleToLongFunction<E> function)
     {
-        return supplier;
+        return function;
     }
     
-    static <E extends Throwable> CheckedBooleanSupplier<E> of(Catcher<Throwable> catcher, CheckedBooleanSupplier<E> supplier)
+    static <E extends Throwable> CheckedDoubleToLongFunction<E> of(Catcher<Throwable> catcher, CheckedDoubleToLongFunction<E> function)
     {
-        return supplier.catcher(catcher);
+        return function.catcher(catcher);
     }
     
-    boolean getAsBooleanOrThrow() throws E;
+    long applyAsLongOrThrow(double value) throws E;
     
     @Override
-    default boolean getAsBoolean()
+    default long applyAsLong(double value)
     {
-        try { return getAsBooleanOrThrow(); }
+        try { return applyAsLongOrThrow(value); }
         catch (Throwable e) { catcher().handleOrRethrowError(e); }
-        return false;
+        return 0L;
     }
     
     @Override
     default Catcher<Throwable> catcher() { return Catcher::rethrow; }
     
     @Override
-    default CheckedBooleanSupplier<E> catcher(Catcher<Throwable> catcher)
+    default CheckedDoubleToLongFunction<E> catcher(Catcher<Throwable> catcher)
     {
         Objects.requireNonNull(catcher, "catcher");
         if (catcher == catcher()) { return this; }
         
-        class Impl<_E> implements CheckedBooleanSupplier<E>
+        class Impl<_E> implements CheckedDoubleToLongFunction<E>
         {
-            CheckedBooleanSupplier<E> origin() { return CheckedBooleanSupplier.this; }
+            CheckedDoubleToLongFunction<E> origin() { return CheckedDoubleToLongFunction.this; }
             
             @Override
-            public boolean getAsBooleanOrThrow() throws E { return origin().getAsBooleanOrThrow(); }
+            public long applyAsLongOrThrow(double value) throws E { return origin().applyAsLongOrThrow(value); }
             
             @Override
             public Catcher<Throwable> catcher() { return catcher; }

@@ -13,7 +13,8 @@ import java.util.Objects;
 import java.util.function.DoubleBinaryOperator;
 
 @FunctionalInterface
-public interface CheckedDoubleBinaryOperator<E extends Throwable> extends DoubleBinaryOperator
+public interface CheckedDoubleBinaryOperator<E extends Throwable>
+    extends Catcher.Swap<CheckedDoubleBinaryOperator<E>, Throwable>, DoubleBinaryOperator
 {
     static <E extends Throwable> CheckedDoubleBinaryOperator<E> of(CheckedDoubleBinaryOperator<E> binaryOperator)
     {
@@ -35,8 +36,10 @@ public interface CheckedDoubleBinaryOperator<E extends Throwable> extends Double
         return 0.0;
     }
     
+    @Override
     default Catcher<Throwable> catcher() { return Catcher::rethrow; }
     
+    @Override
     default CheckedDoubleBinaryOperator<E> catcher(Catcher<Throwable> catcher)
     {
         Objects.requireNonNull(catcher, "catcher");

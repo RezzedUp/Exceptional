@@ -13,7 +13,8 @@ import java.util.Objects;
 import java.util.function.DoubleConsumer;
 
 @FunctionalInterface
-public interface CheckedDoubleConsumer<E extends Throwable> extends DoubleConsumer
+public interface CheckedDoubleConsumer<E extends Throwable>
+    extends Catcher.Swap<CheckedDoubleConsumer<E>, Throwable>, DoubleConsumer
 {
     static <E extends Throwable> CheckedDoubleConsumer<E> of(CheckedDoubleConsumer<E> consumer)
     {
@@ -34,8 +35,10 @@ public interface CheckedDoubleConsumer<E extends Throwable> extends DoubleConsum
         catch (Throwable e) { catcher().handleOrRethrowError(e); }
     }
     
+    @Override
     default Catcher<Throwable> catcher() { return Catcher::rethrow; }
     
+    @Override
     default CheckedDoubleConsumer<E> catcher(Catcher<Throwable> catcher)
     {
         Objects.requireNonNull(catcher, "catcher");

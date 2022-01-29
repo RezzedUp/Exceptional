@@ -10,47 +10,47 @@ package com.rezzedup.util.exceptional.checked;
 import com.rezzedup.util.exceptional.Catcher;
 
 import java.util.Objects;
-import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 @FunctionalInterface
-public interface CheckedBooleanSupplier<E extends Throwable>
-    extends Catcher.Swap<CheckedBooleanSupplier<E>, Throwable>, BooleanSupplier
+public interface CheckedDoubleSupplier<E extends Throwable>
+    extends Catcher.Swap<CheckedDoubleSupplier<E>, Throwable>, DoubleSupplier
 {
-    static <E extends Throwable> CheckedBooleanSupplier<E> of(CheckedBooleanSupplier<E> supplier)
+    static <E extends Throwable> CheckedDoubleSupplier<E> of(CheckedDoubleSupplier<E> supplier)
     {
         return supplier;
     }
     
-    static <E extends Throwable> CheckedBooleanSupplier<E> of(Catcher<Throwable> catcher, CheckedBooleanSupplier<E> supplier)
+    static <E extends Throwable> CheckedDoubleSupplier<E> of(Catcher<Throwable> catcher, CheckedDoubleSupplier<E> supplier)
     {
         return supplier.catcher(catcher);
     }
     
-    boolean getAsBooleanOrThrow() throws E;
+    double getAsDoubleOrThrow() throws E;
     
     @Override
-    default boolean getAsBoolean()
+    default double getAsDouble()
     {
-        try { return getAsBooleanOrThrow(); }
+        try { return getAsDoubleOrThrow(); }
         catch (Throwable e) { catcher().handleOrRethrowError(e); }
-        return false;
+        return 0.0;
     }
     
     @Override
     default Catcher<Throwable> catcher() { return Catcher::rethrow; }
     
     @Override
-    default CheckedBooleanSupplier<E> catcher(Catcher<Throwable> catcher)
+    default CheckedDoubleSupplier<E> catcher(Catcher<Throwable> catcher)
     {
         Objects.requireNonNull(catcher, "catcher");
         if (catcher == catcher()) { return this; }
         
-        class Impl<_E> implements CheckedBooleanSupplier<E>
+        class Impl<_E> implements CheckedDoubleSupplier<E>
         {
-            CheckedBooleanSupplier<E> origin() { return CheckedBooleanSupplier.this; }
+            CheckedDoubleSupplier<E> origin() { return CheckedDoubleSupplier.this; }
             
             @Override
-            public boolean getAsBooleanOrThrow() throws E { return origin().getAsBooleanOrThrow(); }
+            public double getAsDoubleOrThrow() throws E { return origin().getAsDoubleOrThrow(); }
             
             @Override
             public Catcher<Throwable> catcher() { return catcher; }
