@@ -27,7 +27,7 @@ public interface Catcher<E extends Throwable> extends Consumer<E>
      *
      * @return a new catcher
      */
-    static <E extends Throwable> Catcher<E> of(Consumer<E> consumer)
+    static <E extends Throwable> Catcher<E> of(Consumer<? super E> consumer)
     {
         Objects.requireNonNull(consumer, "consumer");
         return consumer::accept;
