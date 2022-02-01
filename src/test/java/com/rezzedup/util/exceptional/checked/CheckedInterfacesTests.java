@@ -9,6 +9,7 @@ package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Catcher;
 import com.rezzedup.util.exceptional.Rethrow;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -92,7 +93,7 @@ public class CheckedInterfacesTests
                 () -> "Already tested checked functional interface: " + thing.getClass().getSimpleName()
             );
             
-            System.out.println("Testing checked functional interface: " + type.getSimpleName());
+            System.out.println("\tTesting checked functional interface: " + type.getSimpleName());
             
             CheckedInterfaces<T> test = new CheckedInterfaces<>(type, thing);
             test.internalImplSwapsCatcher();
@@ -165,7 +166,7 @@ public class CheckedInterfacesTests
         }
     }
     
-    //@AfterAll //TODO: add tests for all other checked interfaces then enable this:
+    @AfterAll
     public static void allFunctionalInterfacesHaveCheckedCounterparts()
     {
         Set<String> checkedNames =
@@ -433,6 +434,38 @@ public class CheckedInterfacesTests
     }
     
     @Test
+    public void testCheckedObjDoubleConsumer()
+    {
+        CheckedInterfaces.test(CheckedObjDoubleConsumer.of((a, b) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.acceptOrThrow("a", 2.0))
+            .throwsUnchecked(unchecked -> unchecked.accept("a", 2.0));
+    }
+    
+    @Test
+    public void testCheckedObjIntConsumer()
+    {
+        CheckedInterfaces.test(CheckedObjIntConsumer.of((a, b) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.acceptOrThrow("a", 2))
+            .throwsUnchecked(unchecked -> unchecked.accept("a", 2));
+    }
+    
+    @Test
+    public void testCheckedObjLongConsumer()
+    {
+        CheckedInterfaces.test(CheckedObjLongConsumer.of((a, b) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.acceptOrThrow("a", 2L))
+            .throwsUnchecked(unchecked -> unchecked.accept("a", 2L));
+    }
+    
+    @Test
+    public void testCheckedPredicate()
+    {
+        CheckedInterfaces.test(CheckedPredicate.of((a) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.testOrThrow("a"))
+            .throwsUnchecked(unchecked -> unchecked.test("a"));
+    }
+    
+    @Test
     public void testCheckedRunnable()
     {
         CheckedInterfaces.test(CheckedRunnable.of(() -> { throw new IOException(); }))
@@ -448,5 +481,61 @@ public class CheckedInterfacesTests
         CheckedInterfaces.test(CheckedSupplier.of(() -> { throw new IOException(); }))
             .throwsIoException(CheckedSupplier::getOrThrow)
             .throwsUnchecked(CheckedSupplier::get);
+    }
+    
+    @Test
+    public void testCheckedToDoubleBiFunction()
+    {
+        CheckedInterfaces.test(CheckedToDoubleBiFunction.of((a, b) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.applyAsDoubleOrThrow("a", "b"))
+            .throwsUnchecked(unchecked -> unchecked.applyAsDouble("a", "b"));
+    }
+    
+    @Test
+    public void testCheckedToDoubleFunction()
+    {
+        CheckedInterfaces.test(CheckedToDoubleFunction.of((a) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.applyAsDoubleOrThrow("a"))
+            .throwsUnchecked(unchecked -> unchecked.applyAsDouble("a"));
+    }
+    
+    @Test
+    public void testCheckedToIntBiFunction()
+    {
+        CheckedInterfaces.test(CheckedToIntBiFunction.of((a, b) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.applyAsIntOrThrow("a", "b"))
+            .throwsUnchecked(unchecked -> unchecked.applyAsInt("a", "b"));
+    }
+    
+    @Test
+    public void testCheckedToIntFunction()
+    {
+        CheckedInterfaces.test(CheckedToIntFunction.of((a) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.applyAsIntOrThrow("a"))
+            .throwsUnchecked(unchecked -> unchecked.applyAsInt("a"));
+    }
+    
+    @Test
+    public void testCheckedToLongBiFunction()
+    {
+        CheckedInterfaces.test(CheckedToLongBiFunction.of((a, b) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.applyAsLongOrThrow("a", "b"))
+            .throwsUnchecked(unchecked -> unchecked.applyAsLong("a", "b"));
+    }
+    
+    @Test
+    public void testCheckedToLongFunction()
+    {
+        CheckedInterfaces.test(CheckedToLongFunction.of((a) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.applyAsLongOrThrow("a"))
+            .throwsUnchecked(unchecked -> unchecked.applyAsLong("a"));
+    }
+    
+    @Test
+    public void testCheckedUnaryOperator()
+    {
+        CheckedInterfaces.test(CheckedUnaryOperator.of((a) -> { throw new IOException(); }))
+            .throwsIoException(checked -> checked.applyOrThrow("a"))
+            .throwsUnchecked(unchecked -> unchecked.apply("a"));
     }
 }
