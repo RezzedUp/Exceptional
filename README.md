@@ -8,8 +8,12 @@
 Utilities for handling exceptions.
 
 ```java
+// Automatically handle checked exceptions.
 List<String> lines =
-    Attempt.ignoring(() -> Files.readAllLines(Path.of("example.txt"))).orElseGet(List::of);
+    Attempt.ignoring().get(() -> Files.readAllLines(Path.of("example.txt"))).orElseGet(List::of);
+
+// Create checked versions of all standard functional interfaces.
+CheckedSupplier<List<String>, IOException> getFileLines = () -> Files.readAllLines(Path.of("example.txt"));
 ```
 
 ## Maven
