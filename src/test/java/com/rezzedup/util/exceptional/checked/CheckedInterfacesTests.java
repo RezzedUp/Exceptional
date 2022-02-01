@@ -9,15 +9,19 @@ package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Catcher;
 import com.rezzedup.util.exceptional.Rethrow;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +37,7 @@ public class CheckedInterfacesTests
         {
             // Only test a class once per run.
             assertTrue(
-                TESTED.add((thing.getClass())),
+                TESTED.add((thing.getClass().getInterfaces()[0])),
                 () -> "Already tested class: " + thing.getClass().getSimpleName()
             );
             
@@ -92,19 +96,59 @@ public class CheckedInterfacesTests
         @SuppressWarnings("UnusedReturnValue")
         CheckedInterfaces<T> throwsUnchecked(Consumer<T> unchecked)
         {
-            Assertions.assertThrows(
+            assertThrows(
                 Rethrow.class,
                 () -> unchecked.accept(thing),
-                fail("%name% did not throw a Rethrow when executing its unchecked action")
+                fail("%name% did not throw a Rethrow when executing its unchecked counterpart")
             );
             
-            Assertions.assertDoesNotThrow(
+            assertDoesNotThrow(
                 () -> unchecked.accept(thing.catcher(Catcher::ignore)),
                 fail("%name% threw an exception despite swapping the catcher with 'ignore'")
             );
             
             return this;
         }
+    }
+    
+    private static final Reflections REFLECTIONS;
+    
+    static
+    {
+        // Apparently JUnit's class loader doesn't work well with Reflections.
+        // Nor does the class loader swapping junk seem to work when done later so...
+        // set everything up the very moment the class loads in this here static initializer!
+        
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(CheckedFunction.class.getClassLoader());
+        
+        REFLECTIONS = new Reflections(
+            new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath())
+        );
+        
+        // Put the class loader back where we found it
+        Thread.currentThread().setContextClassLoader(loader);
+    }
+    
+    //@AfterAll TODO: add tests for all other checked interfaces then enable this:
+    public static void allFunctionalInterfacesHaveCheckedCounterparts()
+    {
+        Set<String> checkedNames =
+            CheckedInterfaces.TESTED.stream()
+                .map(Class::getSimpleName)
+                .collect(Collectors.toSet());
+        
+        List<String> missingCounterparts =
+            REFLECTIONS.getTypesAnnotatedWith(FunctionalInterface.class).stream()
+                .filter(clazz -> clazz.getPackageName().equals("java.util.function"))
+                .map(Class::getSimpleName)
+                .filter(name -> !checkedNames.contains("Checked" + name))
+                .collect(Collectors.toList());
+        
+        assertTrue(
+            missingCounterparts.isEmpty(),
+            () -> "Missing 'checked' counterparts to: " + missingCounterparts
+        );
     }
     
     @Test

@@ -2,5 +2,7 @@
 *.jar
 *.iml
 
+.flattened-pom.xml
+
 .idea/
 target/
