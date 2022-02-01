@@ -14,7 +14,7 @@ import java.util.function.DoublePredicate;
 
 @FunctionalInterface
 public interface CheckedDoublePredicate<E extends Throwable>
-    extends Catcher.Swap<CheckedDoublePredicate<E>, Throwable>, DoublePredicate
+    extends CheckedFunctionalInterface<CheckedDoublePredicate<E>, E>, DoublePredicate
 {
     static <E extends Throwable> CheckedDoublePredicate<E> of(CheckedDoublePredicate<E> predicate)
     {

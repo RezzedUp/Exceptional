@@ -14,7 +14,7 @@ import java.util.function.IntToDoubleFunction;
 
 @FunctionalInterface
 public interface CheckedIntToDoubleFunction<E extends Throwable>
-    extends Catcher.Swap<CheckedIntToDoubleFunction<E>, Throwable>, IntToDoubleFunction
+    extends CheckedFunctionalInterface<CheckedIntToDoubleFunction<E>, E>, IntToDoubleFunction
 {
     static <E extends Throwable> CheckedIntToDoubleFunction<E> of(CheckedIntToDoubleFunction<E> function)
     {

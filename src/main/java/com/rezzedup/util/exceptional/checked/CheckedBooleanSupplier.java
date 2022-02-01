@@ -14,7 +14,7 @@ import java.util.function.BooleanSupplier;
 
 @FunctionalInterface
 public interface CheckedBooleanSupplier<E extends Throwable>
-    extends Catcher.Swap<CheckedBooleanSupplier<E>, Throwable>, BooleanSupplier
+    extends CheckedFunctionalInterface<CheckedBooleanSupplier<E>, E>, BooleanSupplier
 {
     static <E extends Throwable> CheckedBooleanSupplier<E> of(CheckedBooleanSupplier<E> supplier)
     {

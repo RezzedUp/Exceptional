@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 @FunctionalInterface
 public interface CheckedRunnable<E extends Throwable>
-    extends Catcher.Swap<CheckedRunnable<E>, Throwable>, Runnable
+    extends CheckedFunctionalInterface<CheckedRunnable<E>, E>, Runnable
 {
     static <E extends Throwable> CheckedRunnable<E> of(CheckedRunnable<E> runnable)
     {

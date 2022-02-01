@@ -14,7 +14,7 @@ import java.util.function.LongConsumer;
 
 @FunctionalInterface
 public interface CheckedLongConsumer<E extends Throwable>
-    extends Catcher.Swap<CheckedLongConsumer<E>, Throwable>, LongConsumer
+    extends CheckedFunctionalInterface<CheckedLongConsumer<E>, E>, LongConsumer
 {
     static <E extends Throwable> CheckedLongConsumer<E> of(CheckedLongConsumer<E> consumer)
     {

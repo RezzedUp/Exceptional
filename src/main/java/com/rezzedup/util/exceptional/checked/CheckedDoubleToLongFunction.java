@@ -14,7 +14,7 @@ import java.util.function.DoubleToLongFunction;
 
 @FunctionalInterface
 public interface CheckedDoubleToLongFunction<E extends Throwable>
-    extends Catcher.Swap<CheckedDoubleToLongFunction<E>, Throwable>, DoubleToLongFunction
+    extends CheckedFunctionalInterface<CheckedDoubleToLongFunction<E>, E>, DoubleToLongFunction
 {
     static <E extends Throwable> CheckedDoubleToLongFunction<E> of(CheckedDoubleToLongFunction<E> function)
     {

@@ -14,7 +14,7 @@ import java.util.function.DoubleConsumer;
 
 @FunctionalInterface
 public interface CheckedDoubleConsumer<E extends Throwable>
-    extends Catcher.Swap<CheckedDoubleConsumer<E>, Throwable>, DoubleConsumer
+    extends CheckedFunctionalInterface<CheckedDoubleConsumer<E>, E>, DoubleConsumer
 {
     static <E extends Throwable> CheckedDoubleConsumer<E> of(CheckedDoubleConsumer<E> consumer)
     {

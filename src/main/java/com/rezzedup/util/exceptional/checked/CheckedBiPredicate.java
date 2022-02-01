@@ -14,7 +14,7 @@ import java.util.function.BiPredicate;
 
 @FunctionalInterface
 public interface CheckedBiPredicate<T, U, E extends Throwable>
-    extends Catcher.Swap<CheckedBiPredicate<T, U, E>, Throwable>, BiPredicate<T, U>
+    extends CheckedFunctionalInterface<CheckedBiPredicate<T, U, E>, E>, BiPredicate<T, U>
 {
     static <T, U, E extends Throwable> CheckedBiPredicate<T, U, E> of(CheckedBiPredicate<T, U, E> biPredicate)
     {

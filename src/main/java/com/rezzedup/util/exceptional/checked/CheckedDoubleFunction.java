@@ -15,7 +15,7 @@ import java.util.function.DoubleFunction;
 
 @FunctionalInterface
 public interface CheckedDoubleFunction<R, E extends Throwable>
-    extends Catcher.Swap<CheckedDoubleFunction<R, E>, Throwable>, DoubleFunction<R>
+    extends CheckedFunctionalInterface<CheckedDoubleFunction<R, E>, E>, DoubleFunction<R>
 {
     static <R, E extends Throwable> CheckedDoubleFunction<R, E> of(CheckedDoubleFunction<R, E> function)
     {

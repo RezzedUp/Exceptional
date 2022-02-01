@@ -14,7 +14,7 @@ import java.util.function.IntConsumer;
 
 @FunctionalInterface
 public interface CheckedIntConsumer<E extends Throwable>
-    extends Catcher.Swap<CheckedIntConsumer<E>, Throwable>, IntConsumer
+    extends CheckedFunctionalInterface<CheckedIntConsumer<E>, E>, IntConsumer
 {
     static <E extends Throwable> CheckedIntConsumer<E> of(CheckedIntConsumer<E> consumer)
     {

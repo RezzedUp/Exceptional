@@ -14,7 +14,7 @@ import java.util.function.LongUnaryOperator;
 
 @FunctionalInterface
 public interface CheckedLongUnaryOperator<E extends Throwable>
-    extends Catcher.Swap<CheckedLongUnaryOperator<E>, Throwable>, LongUnaryOperator
+    extends CheckedFunctionalInterface<CheckedLongUnaryOperator<E>, E>, LongUnaryOperator
 {
     static <E extends Throwable> CheckedLongUnaryOperator<E> of(CheckedLongUnaryOperator<E> unaryOperator)
     {

@@ -25,7 +25,7 @@ import java.util.function.BiFunction;
  */
 @FunctionalInterface
 public interface CheckedBiFunction<T, U, R, E extends Throwable>
-    extends Catcher.Swap<CheckedBiFunction<T, U, R, E>, Throwable>, BiFunction<T, U, R>
+    extends CheckedFunctionalInterface<CheckedBiFunction<T, U, R, E>, E>, BiFunction<T, U, R>
 {
     static <T, U, R, E extends Throwable> CheckedBiFunction<T, U, R, E> of(CheckedBiFunction<T, U, R, E> biFunction)
     {

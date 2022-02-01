@@ -14,7 +14,7 @@ import java.util.function.IntUnaryOperator;
 
 @FunctionalInterface
 public interface CheckedIntUnaryOperator<E extends Throwable>
-    extends Catcher.Swap<CheckedIntUnaryOperator<E>, Throwable>, IntUnaryOperator
+    extends CheckedFunctionalInterface<CheckedIntUnaryOperator<E>, E>, IntUnaryOperator
 {
     static <E extends Throwable> CheckedIntUnaryOperator<E> of(CheckedIntUnaryOperator<E> unaryOperator)
     {

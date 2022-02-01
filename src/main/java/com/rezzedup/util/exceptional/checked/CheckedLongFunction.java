@@ -15,7 +15,7 @@ import java.util.function.LongFunction;
 
 @FunctionalInterface
 public interface CheckedLongFunction<R, E extends Throwable>
-    extends Catcher.Swap<CheckedLongFunction<R, E>, Throwable>, LongFunction<R>
+    extends CheckedFunctionalInterface<CheckedLongFunction<R, E>, E>, LongFunction<R>
 {
     static <R, E extends Throwable> CheckedLongFunction<R, E> of(CheckedLongFunction<R, E> function)
     {

@@ -86,9 +86,4 @@ public interface Catcher<E extends Throwable> extends Consumer<E>
     {
         Catcher<E> catcher();
     }
-    
-    interface Swap<S extends Swap<S, E>, E extends Throwable> extends Source<E>
-    {
-        S catcher(Catcher<E> catcher);
-    }
 }

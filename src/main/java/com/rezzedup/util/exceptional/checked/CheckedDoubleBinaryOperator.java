@@ -14,7 +14,7 @@ import java.util.function.DoubleBinaryOperator;
 
 @FunctionalInterface
 public interface CheckedDoubleBinaryOperator<E extends Throwable>
-    extends Catcher.Swap<CheckedDoubleBinaryOperator<E>, Throwable>, DoubleBinaryOperator
+    extends CheckedFunctionalInterface<CheckedDoubleBinaryOperator<E>, E>, DoubleBinaryOperator
 {
     static <E extends Throwable> CheckedDoubleBinaryOperator<E> of(CheckedDoubleBinaryOperator<E> binaryOperator)
     {

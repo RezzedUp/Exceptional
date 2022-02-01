@@ -14,7 +14,7 @@ import java.util.function.IntPredicate;
 
 @FunctionalInterface
 public interface CheckedIntPredicate<E extends Throwable>
-    extends Catcher.Swap<CheckedIntPredicate<E>, Throwable>, IntPredicate
+    extends CheckedFunctionalInterface<CheckedIntPredicate<E>, E>, IntPredicate
 {
     static <E extends Throwable> CheckedIntPredicate<E> of(CheckedIntPredicate<E> predicate)
     {

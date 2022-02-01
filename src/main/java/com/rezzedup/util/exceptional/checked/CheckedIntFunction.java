@@ -15,7 +15,7 @@ import java.util.function.IntFunction;
 
 @FunctionalInterface
 public interface CheckedIntFunction<R, E extends Throwable>
-    extends Catcher.Swap<CheckedIntFunction<R, E>, Throwable>, IntFunction<R>
+    extends CheckedFunctionalInterface<CheckedIntFunction<R, E>, E>, IntFunction<R>
 {
     static <R, E extends Throwable> CheckedIntFunction<R, E> of(CheckedIntFunction<R, E> function)
     {

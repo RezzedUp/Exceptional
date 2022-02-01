@@ -14,7 +14,7 @@ import java.util.function.LongBinaryOperator;
 
 @FunctionalInterface
 public interface CheckedLongBinaryOperator<E extends Throwable>
-    extends Catcher.Swap<CheckedLongBinaryOperator<E>, Throwable>, LongBinaryOperator
+    extends CheckedFunctionalInterface<CheckedLongBinaryOperator<E>, E>, LongBinaryOperator
 {
     static <E extends Throwable> CheckedLongBinaryOperator<E> of(CheckedLongBinaryOperator<E> binaryOperator)
     {

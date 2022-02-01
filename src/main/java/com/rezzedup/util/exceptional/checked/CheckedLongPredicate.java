@@ -14,7 +14,7 @@ import java.util.function.LongPredicate;
 
 @FunctionalInterface
 public interface CheckedLongPredicate<E extends Throwable>
-    extends Catcher.Swap<CheckedLongPredicate<E>, Throwable>, LongPredicate
+    extends CheckedFunctionalInterface<CheckedLongPredicate<E>, E>, LongPredicate
 {
     static <E extends Throwable> CheckedLongPredicate<E> of(CheckedLongPredicate<E> predicate)
     {
