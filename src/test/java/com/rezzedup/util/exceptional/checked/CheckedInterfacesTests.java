@@ -10,9 +10,6 @@ package com.rezzedup.util.exceptional.checked;
 import com.rezzedup.util.exceptional.Catcher;
 import com.rezzedup.util.exceptional.Rethrow;
 import org.junit.jupiter.api.Test;
-import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -30,7 +27,56 @@ public class CheckedInterfacesTests
 {
     private static class CheckedInterfaces<T extends CheckedFunctionalInterface<T, IOException>>
     {
-        private static final Set<Class<?>> TESTED = new HashSet<>();
+        // Unchecked JDK functional interfaces in: java.util.function
+        // https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/package-summary.html
+        static final List<String> FUNCTIONAL_INTERFACES =
+            List.of(
+                "BiConsumer",
+                "BiFunction",
+                "BinaryOperator",
+                "BiPredicate",
+                "BooleanSupplier",
+                "Consumer",
+                "DoubleBinaryOperator",
+                "DoubleConsumer",
+                "DoubleFunction",
+                "DoublePredicate",
+                "DoubleSupplier",
+                "DoubleToIntFunction",
+                "DoubleToLongFunction",
+                "DoubleUnaryOperator",
+                "Function",
+                "IntBinaryOperator",
+                "IntConsumer",
+                "IntFunction",
+                "IntPredicate",
+                "IntSupplier",
+                "IntToDoubleFunction",
+                "IntToLongFunction",
+                "IntUnaryOperator",
+                "LongBinaryOperator",
+                "LongConsumer",
+                "LongFunction",
+                "LongPredicate",
+                "LongSupplier",
+                "LongToDoubleFunction",
+                "LongToIntFunction",
+                "LongUnaryOperator",
+                "ObjDoubleConsumer",
+                "ObjIntConsumer",
+                "ObjLongConsumer",
+                "Predicate",
+                "Supplier",
+                "ToDoubleBiFunction",
+                "ToDoubleFunction",
+                "ToIntBiFunction",
+                "ToIntFunction",
+                "ToLongBiFunction",
+                "ToLongFunction",
+                "UnaryOperator"
+            );
+        
+        static final Set<Class<?>> TESTED = new HashSet<>();
         
         private final Class<?> type;
         private final T thing;
@@ -119,26 +165,7 @@ public class CheckedInterfacesTests
         }
     }
     
-    private static final Reflections REFLECTIONS;
-    
-    static
-    {
-        // Apparently JUnit's class loader doesn't work well with Reflections.
-        // Nor does the class loader swapping junk seem to work when done later so...
-        // set everything up the very moment the class loads in this here static initializer!
-        
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(CheckedFunction.class.getClassLoader());
-        
-        REFLECTIONS = new Reflections(
-            new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath())
-        );
-        
-        // Put the class loader back where we found it
-        Thread.currentThread().setContextClassLoader(loader);
-    }
-    
-    //@AfterAll TODO: add tests for all other checked interfaces then enable this:
+    //@AfterAll //TODO: add tests for all other checked interfaces then enable this:
     public static void allFunctionalInterfacesHaveCheckedCounterparts()
     {
         Set<String> checkedNames =
@@ -147,9 +174,7 @@ public class CheckedInterfacesTests
                 .collect(Collectors.toSet());
         
         List<String> missingCounterparts =
-            REFLECTIONS.getTypesAnnotatedWith(FunctionalInterface.class).stream()
-                .filter(clazz -> clazz.getPackageName().equals("java.util.function"))
-                .map(Class::getSimpleName)
+            CheckedInterfaces.FUNCTIONAL_INTERFACES.stream()
                 .filter(name -> !checkedNames.contains("Checked" + name))
                 .collect(Collectors.toList());
         
