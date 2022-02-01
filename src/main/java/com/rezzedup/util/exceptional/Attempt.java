@@ -7,12 +7,18 @@
  */
 package com.rezzedup.util.exceptional;
 
+import com.rezzedup.util.exceptional.checked.CheckedDoubleSupplier;
+import com.rezzedup.util.exceptional.checked.CheckedIntSupplier;
+import com.rezzedup.util.exceptional.checked.CheckedLongSupplier;
 import com.rezzedup.util.exceptional.checked.CheckedRunnable;
 import com.rezzedup.util.exceptional.checked.CheckedSupplier;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 
 /**
  * Attempts to perform potentially exceptional actions, automatically handling any thrown exception.
@@ -84,5 +90,50 @@ public interface Attempt extends Catcher.Source<Exception>
         try { return Optional.ofNullable(supplier.getOrThrow()); }
         catch (Exception e) { catcher().handleOrRethrowError(e); }
         return Optional.empty();
+    }
+    
+    /**
+     * Gets the value from the potentially exceptional int supplier, automatically handling any thrown
+     * exception with {@link #catcher()}.
+     *
+     * @param supplier  potentially exceptional int supplier
+     *
+     * @return the result from the supplier, or empty if an exception is thrown
+     */
+    default OptionalInt getAsInt(CheckedIntSupplier<? extends Exception> supplier)
+    {
+        try { return OptionalInt.of(supplier.getAsIntOrThrow()); }
+        catch (Exception e) { catcher().handleOrRethrowError(e); }
+        return OptionalInt.empty();
+    }
+    
+    /**
+     * Gets the value from the potentially exceptional long supplier, automatically handling any thrown
+     * exception with {@link #catcher()}.
+     *
+     * @param supplier  potentially exceptional long supplier
+     *
+     * @return the result from the supplier, or empty if an exception is thrown
+     */
+    default OptionalLong getAsLong(CheckedLongSupplier<? extends Exception> supplier)
+    {
+        try { return OptionalLong.of(supplier.getAsLongOrThrow()); }
+        catch (Exception e) { catcher().handleOrRethrowError(e); }
+        return OptionalLong.empty();
+    }
+    
+    /**
+     * Gets the value from the potentially exceptional double supplier, automatically handling any thrown
+     * exception with {@link #catcher()}.
+     *
+     * @param supplier  potentially exceptional double supplier
+     *
+     * @return the result from the supplier, or empty if an exception is thrown
+     */
+    default OptionalDouble getAsDouble(CheckedDoubleSupplier<? extends Exception> supplier)
+    {
+        try { return OptionalDouble.of(supplier.getAsDoubleOrThrow()); }
+        catch (Exception e) { catcher().handleOrRethrowError(e); }
+        return OptionalDouble.empty();
     }
 }
