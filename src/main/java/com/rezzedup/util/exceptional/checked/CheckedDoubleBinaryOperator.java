@@ -28,6 +28,8 @@ public interface CheckedDoubleBinaryOperator<E extends Throwable>
     
     double applyAsDoubleOrThrow(double left, double right) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default double applyAsDouble(double left, double right)
     {

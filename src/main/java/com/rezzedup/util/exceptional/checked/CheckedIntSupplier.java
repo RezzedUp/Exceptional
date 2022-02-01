@@ -28,6 +28,8 @@ public interface CheckedIntSupplier<E extends Throwable>
     
     int getAsIntOrThrow() throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default int getAsInt()
     {

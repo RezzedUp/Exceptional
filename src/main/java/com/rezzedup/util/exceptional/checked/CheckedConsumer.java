@@ -43,6 +43,8 @@ public interface CheckedConsumer<T, E extends Throwable>
      */
     void acceptOrThrow(T t) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default void accept(T t)
     {

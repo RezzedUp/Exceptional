@@ -28,6 +28,8 @@ public interface CheckedIntToLongFunction<E extends Throwable>
     
     long applyAsLongOrThrow(int value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default long applyAsLong(int value)
     {

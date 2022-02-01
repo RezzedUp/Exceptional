@@ -28,6 +28,8 @@ public interface CheckedIntConsumer<E extends Throwable>
     
     void acceptOrThrow(int value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default void accept(int value)
     {

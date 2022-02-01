@@ -28,6 +28,8 @@ public interface CheckedIntPredicate<E extends Throwable>
     
     boolean testOrThrow(int value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default boolean test(int value)
     {

@@ -29,6 +29,8 @@ public interface CheckedBinaryOperator<T, E extends Throwable>
     
     T applyOrThrow(T t, T t2) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default @NullOr T apply(T t, T t2)
     {

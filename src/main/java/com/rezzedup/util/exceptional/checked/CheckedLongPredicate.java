@@ -28,6 +28,8 @@ public interface CheckedLongPredicate<E extends Throwable>
     
     boolean testOrThrow(long value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default boolean test(long value)
     {

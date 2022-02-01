@@ -28,6 +28,8 @@ public interface CheckedDoubleConsumer<E extends Throwable>
     
     void acceptOrThrow(double value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default void accept(double value)
     {

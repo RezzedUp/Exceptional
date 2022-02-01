@@ -28,6 +28,8 @@ public interface CheckedLongConsumer<E extends Throwable>
     
     void acceptOrThrow(long value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default void accept(long value)
     {

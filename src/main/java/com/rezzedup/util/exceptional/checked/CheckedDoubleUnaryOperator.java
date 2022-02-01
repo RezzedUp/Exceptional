@@ -28,6 +28,8 @@ public interface CheckedDoubleUnaryOperator<E extends Throwable>
     
     double applyAsDoubleOrThrow(double operand) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default double applyAsDouble(double operand)
     {

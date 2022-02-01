@@ -28,6 +28,8 @@ public interface CheckedDoubleSupplier<E extends Throwable>
     
     double getAsDoubleOrThrow() throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default double getAsDouble()
     {

@@ -43,6 +43,8 @@ public interface CheckedSupplier<T, E extends Throwable>
      */
     T getOrThrow() throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default @NullOr T get()
     {

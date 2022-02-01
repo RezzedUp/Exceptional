@@ -28,6 +28,8 @@ public interface CheckedIntBinaryOperator<E extends Throwable>
     
     int applyAsIntOrThrow(int left, int right) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default int applyAsInt(int left, int right)
     {

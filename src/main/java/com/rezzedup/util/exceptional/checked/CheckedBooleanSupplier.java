@@ -28,6 +28,8 @@ public interface CheckedBooleanSupplier<E extends Throwable>
     
     boolean getAsBooleanOrThrow() throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default boolean getAsBoolean()
     {

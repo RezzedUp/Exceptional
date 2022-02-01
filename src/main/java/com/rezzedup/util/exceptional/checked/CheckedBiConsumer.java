@@ -45,6 +45,8 @@ public interface CheckedBiConsumer<T, U, E extends Throwable>
      */
     void acceptOrThrow(T t, U u) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default void accept(T t, U u)
     {

@@ -29,6 +29,8 @@ public interface CheckedIntFunction<R, E extends Throwable>
     
     R applyOrThrow(int value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default @NullOr R apply(int value)
     {

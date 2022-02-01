@@ -28,6 +28,8 @@ public interface CheckedDoublePredicate<E extends Throwable>
     
     boolean testOrThrow(double value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default boolean test(double value)
     {

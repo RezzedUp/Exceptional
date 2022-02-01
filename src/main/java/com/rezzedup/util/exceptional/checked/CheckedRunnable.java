@@ -39,6 +39,8 @@ public interface CheckedRunnable<E extends Throwable>
      */
     void runOrThrow() throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default void run()
     {

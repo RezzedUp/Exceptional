@@ -29,6 +29,8 @@ public interface CheckedDoubleFunction<R, E extends Throwable>
     
     R applyOrThrow(double value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default @NullOr R apply(double value)
     {

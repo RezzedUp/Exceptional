@@ -48,6 +48,8 @@ public interface CheckedBiFunction<T, U, R, E extends Throwable>
      */
     R applyOrThrow(T t, U u) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default @NullOr R apply(T t, U u)
     {

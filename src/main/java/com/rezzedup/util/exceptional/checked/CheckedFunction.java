@@ -46,6 +46,8 @@ public interface CheckedFunction<T, R, E extends Throwable>
      */
     R applyOrThrow(T t) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default @NullOr R apply(T t)
     {

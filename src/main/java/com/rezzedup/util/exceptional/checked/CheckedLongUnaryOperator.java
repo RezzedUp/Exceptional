@@ -28,6 +28,8 @@ public interface CheckedLongUnaryOperator<E extends Throwable>
     
     long applyAsLongOrThrow(long operand) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default long applyAsLong(long operand)
     {

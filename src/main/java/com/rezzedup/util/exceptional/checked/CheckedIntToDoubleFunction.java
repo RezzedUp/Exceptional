@@ -28,6 +28,8 @@ public interface CheckedIntToDoubleFunction<E extends Throwable>
     
     double applyAsDoubleOrThrow(int value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default double applyAsDouble(int value)
     {

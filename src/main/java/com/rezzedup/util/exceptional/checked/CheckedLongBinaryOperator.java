@@ -28,6 +28,8 @@ public interface CheckedLongBinaryOperator<E extends Throwable>
     
     long applyAsLongOrThrow(long left, long right) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default long applyAsLong(long left, long right)
     {

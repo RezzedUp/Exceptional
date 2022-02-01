@@ -29,6 +29,8 @@ public interface CheckedLongFunction<R, E extends Throwable>
     
     R applyOrThrow(long value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default @NullOr R apply(long value)
     {

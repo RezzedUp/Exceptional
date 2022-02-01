@@ -28,6 +28,8 @@ public interface CheckedDoubleToLongFunction<E extends Throwable>
     
     long applyAsLongOrThrow(double value) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default long applyAsLong(double value)
     {

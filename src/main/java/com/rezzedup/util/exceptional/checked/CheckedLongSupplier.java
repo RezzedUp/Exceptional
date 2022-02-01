@@ -28,6 +28,8 @@ public interface CheckedLongSupplier<E extends Throwable>
     
     long getAsLongOrThrow() throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default long getAsLong()
     {

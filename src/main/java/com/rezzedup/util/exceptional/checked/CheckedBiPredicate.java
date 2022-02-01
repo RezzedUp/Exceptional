@@ -28,6 +28,8 @@ public interface CheckedBiPredicate<T, U, E extends Throwable>
     
     boolean testOrThrow(T t, U u) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default boolean test(T t, U u)
     {

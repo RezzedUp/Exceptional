@@ -28,6 +28,8 @@ public interface CheckedIntUnaryOperator<E extends Throwable>
     
     int applyAsIntOrThrow(int operand) throws E;
     
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @Override
     default int applyAsInt(int operand)
     {
