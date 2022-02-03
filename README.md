@@ -1,9 +1,29 @@
+<!-- Badges Config -->
+
+[maven-central]: https://search.maven.org/artifact/com.rezzedup.util/exceptional "Maven Central"
+[maven-central-badge]: https://img.shields.io/maven-central/v/com.rezzedup.util/exceptional?color=ok&label=Maven%20Central
+
+[license]: ./LICENSE "Project License: MPL-2.0"
+[license-badge]: https://img.shields.io/badge/License-MPL--2.0-blue
+
+[java-version]: # "Java Version: 11"
+[java-version-badge]: https://img.shields.io/badge/Java-11-orange
+
+[javadoc]: https://javadoc.io/doc/com.rezzedup.util/exceptional "View Javadocs"
+[javadoc-badge]: https://javadoc.io/badge2/com.rezzedup.util/exceptional/javadoc.svg?label=Javadoc&color=%234D7A97
+
+[codecov]: https://app.codecov.io/gh/RezzedUp/Exceptional/
+[codecov-badge]: https://codecov.io/gh/RezzedUp/Exceptional/branch/main/graph/badge.svg
+
+<!-- Header -->
+
 # ⁉️ Exceptional
 
-[![](https://img.shields.io/maven-central/v/com.rezzedup.util/exceptional?color=ok&label=Maven%20Central)](https://search.maven.org/artifact/com.rezzedup.util/exceptional "Maven Central")
-[![](https://img.shields.io/badge/License-MPL--2.0-blue)](./LICENSE "Project License: MPL-2.0")
-[![](https://img.shields.io/badge/Java-11-orange)](# "Java Version: 11")
-[![javadoc](https://javadoc.io/badge2/com.rezzedup.util/exceptional/javadoc.svg?label=Javadoc&color=%234D7A97)](https://javadoc.io/doc/com.rezzedup.util/exceptional "View Javadocs")
+[![maven-central-badge]][maven-central]
+[![license-badge]][license]
+[![java-version-badge]][java-version]
+[![javadoc-badge]][javadoc]
+[![codecov-badge]][codecov]
 
 Utilities for handling exceptions.
 
