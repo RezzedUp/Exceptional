@@ -85,12 +85,14 @@ public class AttemptTests
             maybe.assertIfResultExists(optional -> assertTrue(optional.isEmpty()));
         }
         
-        // Test a checked long supplier that throws an ArithmeticException (divides by zero)
+        // Test a checked long supplier that throws an ArithmeticException
         {
             Result<OptionalDouble> maybe = new Result<>();
             
             assertions.apply(ArithmeticException.class).accept(() ->
-                maybe.result = attempt.getAsDouble(() -> 1.0 / 0) // can't use 0.0 otherwise we end up with Infinity
+                // The exception must be thrown manually because apparently
+                // division by zero is perfectly legal in floating-point land...
+                maybe.result = attempt.getAsDouble(() -> { throw new ArithmeticException(); })
             );
             
             maybe.assertIfResultExists(optional -> assertTrue(optional.isEmpty()));
