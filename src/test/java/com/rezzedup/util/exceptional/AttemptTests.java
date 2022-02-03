@@ -14,13 +14,13 @@ import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AttemptTests
 {
@@ -84,6 +84,17 @@ public class AttemptTests
             
             maybe.assertIfResultExists(optional -> assertTrue(optional.isEmpty()));
         }
+        
+        // Test a checked long supplier that throws an ArithmeticException (divides by zero)
+        {
+            Result<OptionalDouble> maybe = new Result<>();
+            
+            assertions.apply(ArithmeticException.class).accept(() ->
+                maybe.result = attempt.getAsDouble(() -> 1.0 / 0) // can't use 0.0 otherwise we end up with Infinity
+            );
+            
+            maybe.assertIfResultExists(optional -> assertTrue(optional.isEmpty()));
+        }
     }
     
     @Test
@@ -117,5 +128,38 @@ public class AttemptTests
     public void customizedAttemptThrowsNullPointerException()
     {
         assertThrows(NullPointerException.class, () -> Attempt.with(null));
+    }
+    
+    @Test
+    public void testSuccessfulAttempts()
+    {
+        // Test a noop checked runnable
+        {
+            assertDoesNotThrow(() -> Attempt.rethrowing().run(() -> {}));
+        }
+        
+        // Test a checked string supplier
+        {
+            Optional<String> maybe = assertDoesNotThrow(() -> Attempt.rethrowing().get(() -> "abc"));
+            assertTrue(maybe.isPresent());
+        }
+        
+        // Test a checked int supplier
+        {
+            OptionalInt maybe = assertDoesNotThrow(() -> Attempt.rethrowing().getAsInt(() -> 1));
+            assertTrue(maybe.isPresent());
+        }
+        
+        // Test a checked long supplier
+        {
+            OptionalLong maybe = assertDoesNotThrow(() -> Attempt.rethrowing().getAsLong(() -> 1L));
+            assertTrue(maybe.isPresent());
+        }
+        
+        // Test a checked double supplier
+        {
+            OptionalDouble maybe = assertDoesNotThrow(() -> Attempt.rethrowing().getAsDouble(() -> 1.0));
+            assertTrue(maybe.isPresent());
+        }
     }
 }
