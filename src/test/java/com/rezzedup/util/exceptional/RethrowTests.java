@@ -9,25 +9,29 @@ package com.rezzedup.util.exceptional;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RethrowTests
 {
     @Test
-    public void testRethrow()
+    public void alwaysThrowsRethrowInstance()
     {
-        assertThrows(Rethrow.class, () -> {
-            throw Rethrow.caught(new IOException());
-        });
+        Rethrow runtime = assertThrows(Rethrow.class, () -> { throw Rethrow.caught(new RuntimeException()); });
+        Rethrow exception = assertThrows(Rethrow.class, () -> { throw Rethrow.caught(new Exception()); });
+        Rethrow error = assertThrows(Rethrow.class, () -> { throw Rethrow.caught(new Error()); });
+        
+        // Rethrowing should never re-wrap an existing Rethrow instance; simply rethrow it as-is.
+        assertSame(runtime, assertThrows(Rethrow.class, () -> { throw Rethrow.caught(runtime); }));
+        assertSame(exception, assertThrows(Rethrow.class, () -> { throw Rethrow.caught(exception); }));
+        assertSame(error, assertThrows(Rethrow.class, () -> { throw Rethrow.caught(error); }));
+        
     }
     
+    @SuppressWarnings({"ConstantConditions", "ThrowableNotThrown"})
     @Test
-    public void testSneaky()
+    public void neverContainsNullException()
     {
-        assertThrows(IOException.class, () -> {
-            throw Sneaky.rethrow(new IOException());
-        });
+        assertThrows(NullPointerException.class, () -> new Rethrow(null));
+        assertNotNull(new Rethrow(new Exception()).getCause());
     }
 }
