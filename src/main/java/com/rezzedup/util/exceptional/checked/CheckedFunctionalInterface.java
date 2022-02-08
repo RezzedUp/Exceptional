@@ -8,9 +8,10 @@
 package com.rezzedup.util.exceptional.checked;
 
 import com.rezzedup.util.exceptional.Catcher;
+import com.rezzedup.util.exceptional.CatcherSource;
 
 public interface CheckedFunctionalInterface<T extends CheckedFunctionalInterface<T, E>, E extends Throwable>
-    extends Catcher.Source<Throwable>
+    extends CatcherSource<Throwable>
 {
     T catcher(Catcher<Throwable> catcher);
 }

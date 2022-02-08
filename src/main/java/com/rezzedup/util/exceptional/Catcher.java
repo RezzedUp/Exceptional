@@ -82,8 +82,4 @@ public interface Catcher<E extends Throwable> extends Consumer<E>
     @Override
     default void accept(E exception) { handleOrRethrowError(exception); }
     
-    interface Source<E extends Throwable>
-    {
-        Catcher<E> catcher();
-    }
 }

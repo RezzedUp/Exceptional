@@ -24,7 +24,7 @@ import java.util.OptionalLong;
  * Attempts to perform potentially exceptional actions, automatically handling any thrown exception.
  */
 @FunctionalInterface
-public interface Attempt extends Catcher.Source<Exception>
+public interface Attempt extends CatcherSource<Exception>
 {
     /**
      * Creates a new Attempt with the provided catcher.
